@@ -1,0 +1,3758 @@
+{
+ "Resources": {
+  "S3Constructs3LogsBucketD5E44EC7": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "AccessControl": "LogDeliveryWrite",
+    "LoggingConfiguration": {
+     "LogFilePrefix": "logs/"
+    },
+    "OwnershipControls": {
+     "Rules": [
+      {
+       "ObjectOwnership": "ObjectWriter"
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ],
+    "VersioningConfiguration": {
+     "Status": "Enabled"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/S3Construct/s3LogsBucket/Resource"
+   }
+  },
+  "S3Constructs3LogsBucketPolicyFCDFF42A": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "S3Constructs3LogsBucketD5E44EC7"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "S3Constructs3LogsBucketD5E44EC7",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "S3Constructs3LogsBucketD5E44EC7",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:PutObject",
+       "Condition": {
+        "ArnLike": {
+         "aws:SourceArn": {
+          "Fn::GetAtt": [
+           "S3Constructs3LogsBucketD5E44EC7",
+           "Arn"
+          ]
+         }
+        },
+        "StringEquals": {
+         "aws:SourceAccount": {
+          "Ref": "AWS::AccountId"
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "logging.s3.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "S3Constructs3LogsBucketD5E44EC7",
+            "Arn"
+           ]
+          },
+          "/logs/*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "S3Constructs3LogsBucketD5E44EC7",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "S3Constructs3LogsBucketD5E44EC7",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:PutObject",
+       "Condition": {
+        "ArnLike": {
+         "aws:SourceArn": {
+          "Fn::GetAtt": [
+           "S3Constructingestbucket680F5E47",
+           "Arn"
+          ]
+         }
+        },
+        "StringEquals": {
+         "aws:SourceAccount": {
+          "Ref": "AWS::AccountId"
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "logging.s3.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "S3Constructs3LogsBucketD5E44EC7",
+            "Arn"
+           ]
+          },
+          "/ingestBucket/logs/*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": "s3:PutObject",
+       "Condition": {
+        "ArnLike": {
+         "aws:SourceArn": {
+          "Fn::GetAtt": [
+           "S3Constructembeddingsbucket88627F39",
+           "Arn"
+          ]
+         }
+        },
+        "StringEquals": {
+         "aws:SourceAccount": {
+          "Ref": "AWS::AccountId"
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "logging.s3.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "S3Constructs3LogsBucketD5E44EC7",
+            "Arn"
+           ]
+          },
+          "/embeddingsbucket/logs/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/S3Construct/s3LogsBucket/Policy/Resource"
+   }
+  },
+  "S3Constructs3LogsBucketAutoDeleteObjectsCustomResourceF3A3860A": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "S3Constructs3LogsBucketD5E44EC7"
+    }
+   },
+   "DependsOn": [
+    "S3Constructs3LogsBucketPolicyFCDFF42A"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/S3Construct/s3LogsBucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "S3Constructingestbucket680F5E47": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "LifecycleConfiguration": {
+     "Rules": [
+      {
+       "ExpirationInDays": 10,
+       "Status": "Enabled"
+      }
+     ]
+    },
+    "LoggingConfiguration": {
+     "DestinationBucketName": {
+      "Ref": "S3Constructs3LogsBucketD5E44EC7"
+     },
+     "LogFilePrefix": "ingestBucket/logs/"
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/S3Construct/ingestbucket/Resource"
+   }
+  },
+  "S3ConstructingestbucketPolicyE93B4B13": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "S3Constructingestbucket680F5E47"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "S3Constructingestbucket680F5E47",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "S3Constructingestbucket680F5E47",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "S3Constructingestbucket680F5E47",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "S3Constructingestbucket680F5E47",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/S3Construct/ingestbucket/Policy/Resource"
+   }
+  },
+  "S3ConstructingestbucketAutoDeleteObjectsCustomResource65EA8F3D": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "S3Constructingestbucket680F5E47"
+    }
+   },
+   "DependsOn": [
+    "S3ConstructingestbucketPolicyE93B4B13"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/S3Construct/ingestbucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "S3ConstructingestbucketNotifications8E5BCF21": {
+   "Type": "Custom::S3BucketNotifications",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "S3Constructingestbucket680F5E47"
+    },
+    "NotificationConfiguration": {
+     "LambdaFunctionConfigurations": [
+      {
+       "Events": [
+        "s3:ObjectCreated:Put"
+       ],
+       "Filter": {
+        "Key": {
+         "FilterRules": [
+          {
+           "Name": "suffix",
+           "Value": ".json"
+          },
+          {
+           "Name": "prefix",
+           "Value": "ingest/"
+          }
+         ]
+        }
+       },
+       "LambdaFunctionArn": {
+        "Fn::GetAtt": [
+         "LambdaConstructBatchInput15570621",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Events": [
+        "s3:ObjectCreated:Put"
+       ],
+       "Filter": {
+        "Key": {
+         "FilterRules": [
+          {
+           "Name": "suffix",
+           "Value": ".json"
+          },
+          {
+           "Name": "prefix",
+           "Value": "batch/"
+          }
+         ]
+        }
+       },
+       "LambdaFunctionArn": {
+        "Fn::GetAtt": [
+         "LambdaConstructGenerateEmbeddings414066ED",
+         "Arn"
+        ]
+       }
+      }
+     ]
+    },
+    "Managed": true
+   },
+   "DependsOn": [
+    "S3ConstructingestbucketAllowBucketNotificationsToBackendStackLambdaConstructBatchInputE9A0346AA964353F",
+    "S3ConstructingestbucketAllowBucketNotificationsToBackendStackLambdaConstructGenerateEmbeddingsE858EAF10AEDCB47"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/S3Construct/ingestbucket/Notifications/Resource"
+   }
+  },
+  "S3ConstructingestbucketAllowBucketNotificationsToBackendStackLambdaConstructBatchInputE9A0346AA964353F": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "LambdaConstructBatchInput15570621",
+      "Arn"
+     ]
+    },
+    "Principal": "s3.amazonaws.com",
+    "SourceAccount": {
+     "Ref": "AWS::AccountId"
+    },
+    "SourceArn": {
+     "Fn::GetAtt": [
+      "S3Constructingestbucket680F5E47",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/S3Construct/ingestbucket/AllowBucketNotificationsToBackendStackLambdaConstructBatchInputE9A0346A"
+   }
+  },
+  "S3ConstructingestbucketAllowBucketNotificationsToBackendStackLambdaConstructGenerateEmbeddingsE858EAF10AEDCB47": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "LambdaConstructGenerateEmbeddings414066ED",
+      "Arn"
+     ]
+    },
+    "Principal": "s3.amazonaws.com",
+    "SourceAccount": {
+     "Ref": "AWS::AccountId"
+    },
+    "SourceArn": {
+     "Fn::GetAtt": [
+      "S3Constructingestbucket680F5E47",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/S3Construct/ingestbucket/AllowBucketNotificationsToBackendStackLambdaConstructGenerateEmbeddingsE858EAF1"
+   }
+  },
+  "S3Constructembeddingsbucket88627F39": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "LifecycleConfiguration": {
+     "Rules": [
+      {
+       "ExpirationInDays": 100,
+       "Status": "Enabled"
+      }
+     ]
+    },
+    "LoggingConfiguration": {
+     "DestinationBucketName": {
+      "Ref": "S3Constructs3LogsBucketD5E44EC7"
+     },
+     "LogFilePrefix": "embeddingsbucket/logs/"
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/S3Construct/embeddingsbucket/Resource"
+   }
+  },
+  "S3ConstructembeddingsbucketPolicyCF2EE5F1": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "S3Constructembeddingsbucket88627F39"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "S3Constructembeddingsbucket88627F39",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "S3Constructembeddingsbucket88627F39",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "S3Constructembeddingsbucket88627F39",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "S3Constructembeddingsbucket88627F39",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/S3Construct/embeddingsbucket/Policy/Resource"
+   }
+  },
+  "S3ConstructembeddingsbucketAutoDeleteObjectsCustomResourceA0C29900": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "S3Constructembeddingsbucket88627F39"
+    }
+   },
+   "DependsOn": [
+    "S3ConstructembeddingsbucketPolicyCF2EE5F1"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/S3Construct/embeddingsbucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "S3ConstructembeddingsbucketNotifications02E8C4ED": {
+   "Type": "Custom::S3BucketNotifications",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "S3Constructembeddingsbucket88627F39"
+    },
+    "NotificationConfiguration": {
+     "LambdaFunctionConfigurations": [
+      {
+       "Events": [
+        "s3:ObjectCreated:Put"
+       ],
+       "LambdaFunctionArn": {
+        "Fn::GetAtt": [
+         "LambdaConstructSaveEmbeddingsA05C0F60",
+         "Arn"
+        ]
+       }
+      }
+     ]
+    },
+    "Managed": true
+   },
+   "DependsOn": [
+    "S3ConstructembeddingsbucketAllowBucketNotificationsToBackendStackLambdaConstructSaveEmbeddings1B1FB0AC85078536"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/S3Construct/embeddingsbucket/Notifications/Resource"
+   }
+  },
+  "S3ConstructembeddingsbucketAllowBucketNotificationsToBackendStackLambdaConstructSaveEmbeddings1B1FB0AC85078536": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "LambdaConstructSaveEmbeddingsA05C0F60",
+      "Arn"
+     ]
+    },
+    "Principal": "s3.amazonaws.com",
+    "SourceAccount": {
+     "Ref": "AWS::AccountId"
+    },
+    "SourceArn": {
+     "Fn::GetAtt": [
+      "S3Constructembeddingsbucket88627F39",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/S3Construct/embeddingsbucket/AllowBucketNotificationsToBackendStackLambdaConstructSaveEmbeddings1B1FB0AC"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "6c1e9b465fa4b2d651dbc9ce3e732d8702a7b19137327684a71d89f1d355f1a2.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Lambda function for auto-deleting objects in ",
+       {
+        "Ref": "S3Constructs3LogsBucketD5E44EC7"
+       },
+       " S3 bucket."
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.6c1e9b465fa4b2d651dbc9ce3e732d8702a7b19137327684a71d89f1d355f1a2",
+    "aws:asset:property": "Code"
+   }
+  },
+  "VectorCollectionConstructproductscollectionEncryptionPolicy8A780569": {
+   "Type": "AWS::OpenSearchServerless::SecurityPolicy",
+   "Properties": {
+    "Name": "encryptionpolicybacktion53519bca",
+    "Policy": "{\"Rules\":[{\"ResourceType\":\"collection\",\"Resource\":[\"collection/vectorstorebackenection53519bca\"]}],\"AWSOwnedKey\":true}",
+    "Type": "encryption"
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/VectorCollectionConstruct/products-collection/EncryptionPolicy"
+   }
+  },
+  "VectorCollectionConstructproductscollectionNetworkPolicy9331563C": {
+   "Type": "AWS::OpenSearchServerless::SecurityPolicy",
+   "Properties": {
+    "Name": "networkpolicybackection53519bca",
+    "Policy": "[{\"Rules\":[{\"ResourceType\":\"collection\",\"Resource\":[\"collection/vectorstorebackenection53519bca\"]},{\"ResourceType\":\"dashboard\",\"Resource\":[\"collection/vectorstorebackenection53519bca\"]}],\"AllowFromPublic\":true}]",
+    "Type": "network"
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/VectorCollectionConstruct/products-collection/NetworkPolicy"
+   }
+  },
+  "VectorCollectionConstructproductscollectionVectorCollectionCFEF8E30": {
+   "Type": "AWS::OpenSearchServerless::Collection",
+   "Properties": {
+    "Name": "vectorstorebackenection53519bca",
+    "Type": "VECTORSEARCH"
+   },
+   "DependsOn": [
+    "VectorCollectionConstructproductscollectionEncryptionPolicy8A780569",
+    "VectorCollectionConstructproductscollectionNetworkPolicy9331563C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/VectorCollectionConstruct/products-collection/VectorCollection"
+   }
+  },
+  "VectorCollectionConstructproductscollectionAOSSApiAccessAllB1CF1B95": {
+   "Type": "AWS::IAM::ManagedPolicy",
+   "Properties": {
+    "Description": "",
+    "Path": "/",
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "aoss:APIAccessAll",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "VectorCollectionConstructproductscollectionVectorCollectionCFEF8E30",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/VectorCollectionConstruct/products-collection/AOSSApiAccessAll/Resource"
+   }
+  },
+  "VectorCollectionConstructproductscollectionDataAccessPolicyACDC6B05": {
+   "Type": "AWS::OpenSearchServerless::AccessPolicy",
+   "Properties": {
+    "Name": "dataaccesspolicybacktion53519bca",
+    "Policy": {
+     "Fn::Join": [
+      "",
+      [
+       "[{\"Rules\":[{\"Resource\":[\"collection/vectorstorebackenection53519bca\"],\"Permission\":[\"aoss:DescribeCollectionItems\",\"aoss:CreateCollectionItems\",\"aoss:UpdateCollectionItems\"],\"ResourceType\":\"collection\"},{\"Resource\":[\"index/vectorstorebackenection53519bca/*\"],\"Permission\":[\"aoss:UpdateIndex\",\"aoss:DescribeIndex\",\"aoss:ReadDocument\",\"aoss:WriteDocument\",\"aoss:CreateIndex\"],\"ResourceType\":\"index\"}],\"Principal\":[\"",
+       {
+        "Fn::GetAtt": [
+         "LambdaConstructImageSearchServiceRole288F5C93",
+         "Arn"
+        ]
+       },
+       "\"],\"Description\":\"\"},{\"Rules\":[{\"Resource\":[\"collection/vectorstorebackenection53519bca\"],\"Permission\":[\"aoss:DescribeCollectionItems\",\"aoss:CreateCollectionItems\",\"aoss:UpdateCollectionItems\"],\"ResourceType\":\"collection\"},{\"Resource\":[\"index/vectorstorebackenection53519bca/*\"],\"Permission\":[\"aoss:UpdateIndex\",\"aoss:DescribeIndex\",\"aoss:ReadDocument\",\"aoss:WriteDocument\",\"aoss:CreateIndex\"],\"ResourceType\":\"index\"}],\"Principal\":[\"",
+       {
+        "Fn::GetAtt": [
+         "LambdaConstructTextSearchServiceRoleAAC5B33F",
+         "Arn"
+        ]
+       },
+       "\"],\"Description\":\"\"},{\"Rules\":[{\"Resource\":[\"collection/vectorstorebackenection53519bca\"],\"Permission\":[\"aoss:DescribeCollectionItems\",\"aoss:CreateCollectionItems\",\"aoss:UpdateCollectionItems\"],\"ResourceType\":\"collection\"},{\"Resource\":[\"index/vectorstorebackenection53519bca/*\"],\"Permission\":[\"aoss:UpdateIndex\",\"aoss:DescribeIndex\",\"aoss:ReadDocument\",\"aoss:WriteDocument\",\"aoss:CreateIndex\"],\"ResourceType\":\"index\"}],\"Principal\":[\"",
+       {
+        "Fn::GetAtt": [
+         "LambdaConstructSaveEmbeddingsServiceRole09544853",
+         "Arn"
+        ]
+       },
+       "\"],\"Description\":\"\"}]"
+      ]
+     ]
+    },
+    "Type": "data"
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/VectorCollectionConstruct/products-collection/DataAccessPolicy"
+   },
+   "Condition": "VectorCollectionConstructproductscollectionIsDataAccessPolicyNotEmpty30E5CFEE"
+  },
+  "VectorCollectionConstructproductsIndexManageIndexPolicyA29A97D4": {
+   "Type": "AWS::OpenSearchServerless::AccessPolicy",
+   "Properties": {
+    "Name": "manageindexpolicybacdex6d890f1b",
+    "Policy": {
+     "Fn::Join": [
+      "",
+      [
+       "[{\"Rules\":[{\"Resource\":[\"index/vectorstorebackenection53519bca/*\"],\"Permission\":[\"aoss:DescribeIndex\",\"aoss:CreateIndex\",\"aoss:DeleteIndex\",\"aoss:UpdateIndex\"],\"ResourceType\":\"index\"},{\"Resource\":[\"collection/vectorstorebackenection53519bca\"],\"Permission\":[\"aoss:DescribeCollectionItems\"],\"ResourceType\":\"collection\"}],\"Principal\":[\"",
+       {
+        "Fn::GetAtt": [
+         "OpenSearchIndexCRProviderCRRole466FC04E",
+         "Arn"
+        ]
+       },
+       "\"],\"Description\":\"\"}]"
+      ]
+     ]
+    },
+    "Type": "data"
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/VectorCollectionConstruct/productsIndex/ManageIndexPolicy"
+   }
+  },
+  "VectorCollectionConstructproductsIndexVectorIndexAD58CD46": {
+   "Type": "Custom::OpenSearchIndex",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "OpenSearchIndexCRProviderframeworkonEvent6CAE4696",
+      "Arn"
+     ]
+    },
+    "Endpoint": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Fn::GetAtt": [
+         "VectorCollectionConstructproductscollectionVectorCollectionCFEF8E30",
+         "Id"
+        ]
+       },
+       ".",
+       {
+        "Ref": "AWS::Region"
+       },
+       ".aoss.amazonaws.com"
+      ]
+     ]
+    },
+    "IndexName": "products-index",
+    "VectorField": "multimodal_vector",
+    "Dimensions": 1024,
+    "MetadataManagement": [
+     {
+      "MappingField": "image_path",
+      "DataType": "text",
+      "Filterable": true
+     },
+     {
+      "MappingField": "image_product_description",
+      "DataType": "text",
+      "Filterable": true
+     },
+     {
+      "MappingField": "image_brand",
+      "DataType": "text",
+      "Filterable": true
+     },
+     {
+      "MappingField": "image_class",
+      "DataType": "text",
+      "Filterable": true
+     },
+     {
+      "MappingField": "image_url",
+      "DataType": "text",
+      "Filterable": true
+     }
+    ]
+   },
+   "DependsOn": [
+    "VectorCollectionConstructproductscollectionAOSSApiAccessAllB1CF1B95",
+    "VectorCollectionConstructproductscollectionDataAccessPolicyACDC6B05",
+    "VectorCollectionConstructproductscollectionEncryptionPolicy8A780569",
+    "VectorCollectionConstructproductscollectionNetworkPolicy9331563C",
+    "VectorCollectionConstructproductscollectionVectorCollectionCFEF8E30",
+    "VectorCollectionConstructproductsIndexManageIndexPolicyA29A97D4"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/VectorCollectionConstruct/productsIndex/VectorIndex/Default"
+   }
+  },
+  "OpenSearchIndexCRProviderCRRole466FC04E": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     },
+     {
+      "Ref": "VectorCollectionConstructproductscollectionAOSSApiAccessAllB1CF1B95"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/OpenSearchIndexCRProvider/CRRole/Resource",
+    "cdk_nag": {
+     "rules_to_suppress": [
+      {
+       "reason": "CDK CustomResource Lambda uses the AWSLambdaBasicExecutionRole AWS Managed Policy.",
+       "id": "AwsSolutions-IAM4"
+      }
+     ]
+    }
+   }
+  },
+  "OpenSearchIndexCRProviderCustomResourcesFunction4F9ADEA2": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "17460461d507943dd4814f3f50bb41428852eda6c3935f2af95d447d955dfec5.zip"
+    },
+    "Description": "Custom Resource Provider",
+    "Handler": "custom_resources.on_event",
+    "MemorySize": 128,
+    "Role": {
+     "Fn::GetAtt": [
+      "OpenSearchIndexCRProviderCRRole466FC04E",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.12",
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "OpenSearchIndexCRProviderCRRole466FC04E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/OpenSearchIndexCRProvider/CustomResourcesFunction/Resource",
+    "aws:asset:path": "asset.17460461d507943dd4814f3f50bb41428852eda6c3935f2af95d447d955dfec5",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "OpenSearchIndexCRProviderCustomResourcesFunctionLogRetentionC32546EF": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "OpenSearchIndexCRProviderCustomResourcesFunction4F9ADEA2"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 7
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/OpenSearchIndexCRProvider/CustomResourcesFunction/LogRetention/Resource"
+   }
+  },
+  "OpenSearchIndexCRProviderProviderRole87B4E831": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/OpenSearchIndexCRProvider/ProviderRole/Resource",
+    "cdk_nag": {
+     "rules_to_suppress": [
+      {
+       "reason": "CDK CustomResource Lambda uses the AWSLambdaBasicExecutionRole AWS Managed Policy.",
+       "id": "AwsSolutions-IAM4"
+      },
+      {
+       "reason": "CDK CustomResource Provider has a wildcard to invoke any version of the specific Custom Resource function.",
+       "id": "AwsSolutions-IAM5",
+       "applies_to": [
+        {
+         "regex": "/^Resource::<OpenSearchIndexCRProviderCustomResourcesFunction[A-Z0-9]+\\.Arn>:\\*$/g"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  },
+  "OpenSearchIndexCRProviderProviderRoleDefaultPolicy9810CB1F": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "OpenSearchIndexCRProviderCustomResourcesFunction4F9ADEA2",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "OpenSearchIndexCRProviderCustomResourcesFunction4F9ADEA2",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "OpenSearchIndexCRProviderProviderRoleDefaultPolicy9810CB1F",
+    "Roles": [
+     {
+      "Ref": "OpenSearchIndexCRProviderProviderRole87B4E831"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/OpenSearchIndexCRProvider/ProviderRole/DefaultPolicy/Resource",
+    "cdk_nag": {
+     "rules_to_suppress": [
+      {
+       "reason": "CDK CustomResource Provider has a wildcard to invoke any version of the specific Custom Resource function.",
+       "id": "AwsSolutions-IAM5",
+       "applies_to": [
+        {
+         "regex": "/^Resource::<OpenSearchIndexCRProviderCustomResourcesFunction[A-Z0-9]+\\.Arn>:\\*$/g"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  },
+  "OpenSearchIndexCRProviderframeworkonEvent6CAE4696": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "4b8313cdc235017293aeaa9b32282f38142f7e6923fd0ac5322de1edf4b426d7.zip"
+    },
+    "Description": "AWS CDK resource provider framework - onEvent (BackendStack/OpenSearchIndexCRProvider/Provider)",
+    "Environment": {
+     "Variables": {
+      "USER_ON_EVENT_FUNCTION_ARN": {
+       "Fn::GetAtt": [
+        "OpenSearchIndexCRProviderCustomResourcesFunction4F9ADEA2",
+        "Arn"
+       ]
+      }
+     }
+    },
+    "Handler": "framework.onEvent",
+    "Role": {
+     "Fn::GetAtt": [
+      "OpenSearchIndexCRProviderProviderRole87B4E831",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "OpenSearchIndexCRProviderProviderRoleDefaultPolicy9810CB1F",
+    "OpenSearchIndexCRProviderProviderRole87B4E831"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/OpenSearchIndexCRProvider/Provider/framework-onEvent/Resource",
+    "aws:asset:path": "asset.4b8313cdc235017293aeaa9b32282f38142f7e6923fd0ac5322de1edf4b426d7",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code",
+    "cdk_nag": {
+     "rules_to_suppress": [
+      {
+       "reason": "Lambda runtime version is managed upstream by CDK.",
+       "id": "AwsSolutions-L1"
+      }
+     ]
+    }
+   }
+  },
+  "OpenSearchIndexCRProviderframeworkonEventLogRetention64E7FA2B": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "OpenSearchIndexCRProviderframeworkonEvent6CAE4696"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 7
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/OpenSearchIndexCRProvider/Provider/framework-onEvent/LogRetention/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:DeleteRetentionPolicy",
+        "logs:PutRetentionPolicy"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+    "Roles": [
+     {
+      "Ref": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Handler": "index.handler",
+    "Runtime": "nodejs18.x",
+    "Timeout": 900,
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "4e26bf2d0a26f2097fb2b261f22bb51e3f6b4b52635777b1e54edbd8e2d58c35.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Resource",
+    "aws:asset:path": "asset.4e26bf2d0a26f2097fb2b261f22bb51e3f6b4b52635777b1e54edbd8e2d58c35",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "LambdaConstructBatchInputServiceRole77861EC0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/BatchInput/ServiceRole/Resource"
+   }
+  },
+  "LambdaConstructBatchInputServiceRoleDefaultPolicy5CC40485": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sqs:SendMessage",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "LambdaConstructBatchInputDeadLetterQueueFA5D1C1D",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "S3Constructingestbucket680F5E47",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "S3Constructingestbucket680F5E47",
+             "Arn"
+            ]
+           },
+           "/ingest/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "S3Constructingestbucket680F5E47",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "S3Constructingestbucket680F5E47",
+             "Arn"
+            ]
+           },
+           "/batch/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LambdaConstructBatchInputServiceRoleDefaultPolicy5CC40485",
+    "Roles": [
+     {
+      "Ref": "LambdaConstructBatchInputServiceRole77861EC0"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/BatchInput/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "LambdaConstructBatchInputDeadLetterQueueFA5D1C1D": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "MessageRetentionPeriod": 1209600
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/BatchInput/DeadLetterQueue/Resource"
+   }
+  },
+  "LambdaConstructBatchInput15570621": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "e55d58c3cb8749eb7866d1d5974f87d5dcdbb1837b1b4978abae41fb08eb0f46.zip"
+    },
+    "DeadLetterConfig": {
+     "TargetArn": {
+      "Fn::GetAtt": [
+       "LambdaConstructBatchInputDeadLetterQueueFA5D1C1D",
+       "Arn"
+      ]
+     }
+    },
+    "Environment": {
+     "Variables": {
+      "NODE_OPTIONS": "--enable-source-maps",
+      "POWERTOOLS_METRICS_NAMESPACE": "ProductSearchMultimodal",
+      "POWERTOOLS_LOG_LEVEL": "DEBUG",
+      "INGEST_BUCKET": {
+       "Ref": "S3Constructingestbucket680F5E47"
+      },
+      "BUCKET_KEY": "batch",
+      "POWERTOOLS_SERVICE_NAME": "batch-Input",
+      "BATCH_SIZE": "500",
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
+    "FunctionName": "batch-input",
+    "Handler": "index.handler",
+    "Layers": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:lambda:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":094274105915:layer:AWSLambdaPowertoolsTypeScriptV2:1"
+       ]
+      ]
+     }
+    ],
+    "MemorySize": 1024,
+    "ReservedConcurrentExecutions": 1,
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaConstructBatchInputServiceRole77861EC0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 900,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "LambdaConstructBatchInputServiceRoleDefaultPolicy5CC40485",
+    "LambdaConstructBatchInputServiceRole77861EC0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/BatchInput/Resource",
+    "aws:asset:path": "asset.e55d58c3cb8749eb7866d1d5974f87d5dcdbb1837b1b4978abae41fb08eb0f46",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "LambdaConstructBatchInputLogRetention57C63AF6": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "LambdaConstructBatchInput15570621"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 7
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/BatchInput/LogRetention/Resource"
+   }
+  },
+  "LambdaConstructGenerateEmbeddingsServiceRoleC009A3F8": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/GenerateEmbeddings/ServiceRole/Resource"
+   }
+  },
+  "LambdaConstructGenerateEmbeddingsServiceRoleDefaultPolicy2CD8D927": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sqs:SendMessage",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "LambdaConstructGenerateEmbeddingsDeadLetterQueue2A7FD7AE",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "S3Constructembeddingsbucket88627F39",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "S3Constructembeddingsbucket88627F39",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "S3Constructingestbucket680F5E47",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "S3Constructingestbucket680F5E47",
+             "Arn"
+            ]
+           },
+           "/batch/*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "S3Constructingestbucket680F5E47",
+             "Arn"
+            ]
+           },
+           "/images/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "bedrock:InvokeModel",
+       "Effect": "Allow",
+       "Resource": "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-image-v1"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LambdaConstructGenerateEmbeddingsServiceRoleDefaultPolicy2CD8D927",
+    "Roles": [
+     {
+      "Ref": "LambdaConstructGenerateEmbeddingsServiceRoleC009A3F8"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/GenerateEmbeddings/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "LambdaConstructGenerateEmbeddingsDeadLetterQueue2A7FD7AE": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "MessageRetentionPeriod": 1209600
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/GenerateEmbeddings/DeadLetterQueue/Resource"
+   }
+  },
+  "LambdaConstructGenerateEmbeddings414066ED": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "a09c164685cb1e66f7e91e98ec16101eb3adaf0083153ec8673dc4ec66cf1249.zip"
+    },
+    "DeadLetterConfig": {
+     "TargetArn": {
+      "Fn::GetAtt": [
+       "LambdaConstructGenerateEmbeddingsDeadLetterQueue2A7FD7AE",
+       "Arn"
+      ]
+     }
+    },
+    "Environment": {
+     "Variables": {
+      "NODE_OPTIONS": "--enable-source-maps",
+      "POWERTOOLS_METRICS_NAMESPACE": "ProductSearchMultimodal",
+      "POWERTOOLS_LOG_LEVEL": "DEBUG",
+      "MODEL_ID": "amazon.titan-embed-image-v1",
+      "INGEST_BUCKET": {
+       "Ref": "S3Constructingestbucket680F5E47"
+      },
+      "EMBEDDINGS_BUCKET": {
+       "Ref": "S3Constructembeddingsbucket88627F39"
+      },
+      "POWERTOOLS_SERVICE_NAME": "generate-embeddings",
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
+    "FunctionName": "generate-embeddings",
+    "Handler": "index.handler",
+    "Layers": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:lambda:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":094274105915:layer:AWSLambdaPowertoolsTypeScriptV2:1"
+       ]
+      ]
+     }
+    ],
+    "MemorySize": 1024,
+    "ReservedConcurrentExecutions": 35,
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaConstructGenerateEmbeddingsServiceRoleC009A3F8",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 900,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "LambdaConstructGenerateEmbeddingsServiceRoleDefaultPolicy2CD8D927",
+    "LambdaConstructGenerateEmbeddingsServiceRoleC009A3F8"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/GenerateEmbeddings/Resource",
+    "aws:asset:path": "asset.a09c164685cb1e66f7e91e98ec16101eb3adaf0083153ec8673dc4ec66cf1249",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "LambdaConstructGenerateEmbeddingsLogRetentionE7744B57": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "LambdaConstructGenerateEmbeddings414066ED"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 7
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/GenerateEmbeddings/LogRetention/Resource"
+   }
+  },
+  "LambdaConstructSaveEmbeddingsServiceRole09544853": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     },
+     {
+      "Ref": "VectorCollectionConstructproductscollectionAOSSApiAccessAllB1CF1B95"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/SaveEmbeddings/ServiceRole/Resource"
+   }
+  },
+  "LambdaConstructSaveEmbeddingsServiceRoleDefaultPolicy2EEE263D": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sqs:SendMessage",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "LambdaConstructSaveEmbeddingsDeadLetterQueue173AAF91",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "S3Constructembeddingsbucket88627F39",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "S3Constructembeddingsbucket88627F39",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LambdaConstructSaveEmbeddingsServiceRoleDefaultPolicy2EEE263D",
+    "Roles": [
+     {
+      "Ref": "LambdaConstructSaveEmbeddingsServiceRole09544853"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/SaveEmbeddings/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "LambdaConstructSaveEmbeddingsDeadLetterQueue173AAF91": {
+   "Type": "AWS::SQS::Queue",
+   "Properties": {
+    "MessageRetentionPeriod": 1209600
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/SaveEmbeddings/DeadLetterQueue/Resource"
+   }
+  },
+  "LambdaConstructSaveEmbeddingsA05C0F60": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "91733b5e95dc93037cd72556c9dfeaa7e15eee80ccb5b1b479d0e1b5a253f033.zip"
+    },
+    "DeadLetterConfig": {
+     "TargetArn": {
+      "Fn::GetAtt": [
+       "LambdaConstructSaveEmbeddingsDeadLetterQueue173AAF91",
+       "Arn"
+      ]
+     }
+    },
+    "Environment": {
+     "Variables": {
+      "NODE_OPTIONS": "--enable-source-maps",
+      "POWERTOOLS_METRICS_NAMESPACE": "ProductSearchMultimodal",
+      "POWERTOOLS_LOG_LEVEL": "DEBUG",
+      "COLLECTION_ENDPOINT": {
+       "Fn::Join": [
+        "",
+        [
+         "https://",
+         {
+          "Fn::GetAtt": [
+           "VectorCollectionConstructproductscollectionVectorCollectionCFEF8E30",
+           "Id"
+          ]
+         },
+         ".",
+         {
+          "Ref": "AWS::Region"
+         },
+         ".aoss.amazonaws.com"
+        ]
+       ]
+      },
+      "INDEX_NAME": "products-index",
+      "REGION": {
+       "Ref": "AWS::Region"
+      },
+      "POWERTOOLS_SERVICE_NAME": "save-embeddings",
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
+    "FunctionName": "save-embeddings",
+    "Handler": "index.handler",
+    "Layers": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:lambda:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":094274105915:layer:AWSLambdaPowertoolsTypeScriptV2:1"
+       ]
+      ]
+     }
+    ],
+    "MemorySize": 1024,
+    "ReservedConcurrentExecutions": 5,
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaConstructSaveEmbeddingsServiceRole09544853",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 900,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "LambdaConstructSaveEmbeddingsServiceRoleDefaultPolicy2EEE263D",
+    "LambdaConstructSaveEmbeddingsServiceRole09544853"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/SaveEmbeddings/Resource",
+    "aws:asset:path": "asset.91733b5e95dc93037cd72556c9dfeaa7e15eee80ccb5b1b479d0e1b5a253f033",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "LambdaConstructSaveEmbeddingsLogRetentionA1DF5117": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "LambdaConstructSaveEmbeddingsA05C0F60"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 7
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/SaveEmbeddings/LogRetention/Resource"
+   }
+  },
+  "LambdaConstructTextSearchServiceRoleAAC5B33F": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     },
+     {
+      "Ref": "VectorCollectionConstructproductscollectionAOSSApiAccessAllB1CF1B95"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/TextSearch/ServiceRole/Resource"
+   }
+  },
+  "LambdaConstructTextSearchServiceRoleDefaultPolicyDD0FE881": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "S3Constructingestbucket680F5E47",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "S3Constructingestbucket680F5E47",
+             "Arn"
+            ]
+           },
+           "/images/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "bedrock:InvokeModel",
+       "Effect": "Allow",
+       "Resource": "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-image-v1"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LambdaConstructTextSearchServiceRoleDefaultPolicyDD0FE881",
+    "Roles": [
+     {
+      "Ref": "LambdaConstructTextSearchServiceRoleAAC5B33F"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/TextSearch/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "LambdaConstructTextSearch76466F7B": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "cd5b0a64219c6dacea0e51616b76204fd35c281b0b5cac5e4ad131f5fe6c1770.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "NODE_OPTIONS": "--enable-source-maps",
+      "POWERTOOLS_METRICS_NAMESPACE": "ProductSearchMultimodal",
+      "POWERTOOLS_LOG_LEVEL": "DEBUG",
+      "REGION": {
+       "Ref": "AWS::Region"
+      },
+      "INGEST_BUCKET": {
+       "Ref": "S3Constructingestbucket680F5E47"
+      },
+      "MODEL_ID": "amazon.titan-embed-image-v1",
+      "COLLECTION_ENDPOINT": {
+       "Fn::Join": [
+        "",
+        [
+         "https://",
+         {
+          "Fn::GetAtt": [
+           "VectorCollectionConstructproductscollectionVectorCollectionCFEF8E30",
+           "Id"
+          ]
+         },
+         ".",
+         {
+          "Ref": "AWS::Region"
+         },
+         ".aoss.amazonaws.com"
+        ]
+       ]
+      },
+      "INDEX_NAME": "products-index",
+      "POWERTOOLS_SERVICE_NAME": "product-text-search",
+      "QUERY_RESULT_SIZE": "5",
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
+    "FunctionName": "product-text-search",
+    "Handler": "index.handler",
+    "Layers": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:lambda:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":094274105915:layer:AWSLambdaPowertoolsTypeScriptV2:1"
+       ]
+      ]
+     }
+    ],
+    "MemorySize": 1024,
+    "ReservedConcurrentExecutions": 5,
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaConstructTextSearchServiceRoleAAC5B33F",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 29,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "LambdaConstructTextSearchServiceRoleDefaultPolicyDD0FE881",
+    "LambdaConstructTextSearchServiceRoleAAC5B33F"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/TextSearch/Resource",
+    "aws:asset:path": "asset.cd5b0a64219c6dacea0e51616b76204fd35c281b0b5cac5e4ad131f5fe6c1770",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "LambdaConstructTextSearchLogRetentionC454B394": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "LambdaConstructTextSearch76466F7B"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 7
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/TextSearch/LogRetention/Resource"
+   }
+  },
+  "LambdaConstructImageSearchServiceRole288F5C93": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     },
+     {
+      "Ref": "VectorCollectionConstructproductscollectionAOSSApiAccessAllB1CF1B95"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/ImageSearch/ServiceRole/Resource"
+   }
+  },
+  "LambdaConstructImageSearchServiceRoleDefaultPolicy79D741E0": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "xray:PutTelemetryRecords",
+        "xray:PutTraceSegments"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "S3Constructingestbucket680F5E47",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "S3Constructingestbucket680F5E47",
+             "Arn"
+            ]
+           },
+           "/images/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "bedrock:InvokeModel",
+       "Effect": "Allow",
+       "Resource": "arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-image-v1"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LambdaConstructImageSearchServiceRoleDefaultPolicy79D741E0",
+    "Roles": [
+     {
+      "Ref": "LambdaConstructImageSearchServiceRole288F5C93"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/ImageSearch/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "LambdaConstructImageSearchAA3AD075": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "f5d269ea96f57422ab08e2046db44db87379b157769922408d6b54770983ec2b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "NODE_OPTIONS": "--enable-source-maps",
+      "POWERTOOLS_METRICS_NAMESPACE": "ProductSearchMultimodal",
+      "POWERTOOLS_LOG_LEVEL": "DEBUG",
+      "REGION": {
+       "Ref": "AWS::Region"
+      },
+      "INGEST_BUCKET": {
+       "Ref": "S3Constructingestbucket680F5E47"
+      },
+      "MODEL_ID": "amazon.titan-embed-image-v1",
+      "COLLECTION_ENDPOINT": {
+       "Fn::Join": [
+        "",
+        [
+         "https://",
+         {
+          "Fn::GetAtt": [
+           "VectorCollectionConstructproductscollectionVectorCollectionCFEF8E30",
+           "Id"
+          ]
+         },
+         ".",
+         {
+          "Ref": "AWS::Region"
+         },
+         ".aoss.amazonaws.com"
+        ]
+       ]
+      },
+      "INDEX_NAME": "products-index",
+      "POWERTOOLS_SERVICE_NAME": "product-image-search",
+      "QUERY_RESULT_SIZE": "5",
+      "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+     }
+    },
+    "FunctionName": "product-image-search",
+    "Handler": "index.handler",
+    "Layers": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:lambda:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":094274105915:layer:AWSLambdaPowertoolsTypeScriptV2:1"
+       ]
+      ]
+     }
+    ],
+    "MemorySize": 1024,
+    "ReservedConcurrentExecutions": 5,
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaConstructImageSearchServiceRole288F5C93",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 29,
+    "TracingConfig": {
+     "Mode": "Active"
+    }
+   },
+   "DependsOn": [
+    "LambdaConstructImageSearchServiceRoleDefaultPolicy79D741E0",
+    "LambdaConstructImageSearchServiceRole288F5C93"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/ImageSearch/Resource",
+    "aws:asset:path": "asset.f5d269ea96f57422ab08e2046db44db87379b157769922408d6b54770983ec2b",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
+  "LambdaConstructImageSearchLogRetention7B5E835A": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "LambdaConstructImageSearchAA3AD075"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 7
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/LambdaConstruct/ImageSearch/LogRetention/Resource"
+   }
+  },
+  "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource"
+   }
+  },
+  "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:PutBucketNotification",
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36",
+    "Roles": [
+     {
+      "Ref": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource"
+   }
+  },
+  "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Description": "AWS CloudFormation handler for \"Custom::S3BucketNotifications\" resources (@aws-cdk/aws-s3)",
+    "Code": {
+     "ZipFile": "import boto3  # type: ignore\nimport json\nimport logging\nimport urllib.request\n\ns3 = boto3.client(\"s3\")\n\nEVENTBRIDGE_CONFIGURATION = 'EventBridgeConfiguration'\nCONFIGURATION_TYPES = [\"TopicConfigurations\", \"QueueConfigurations\", \"LambdaFunctionConfigurations\"]\n\ndef handler(event: dict, context):\n  response_status = \"SUCCESS\"\n  error_message = \"\"\n  try:\n    props = event[\"ResourceProperties\"]\n    notification_configuration = props[\"NotificationConfiguration\"]\n    managed = props.get('Managed', 'true').lower() == 'true'\n    stack_id = event['StackId']\n    old = event.get(\"OldResourceProperties\", {}).get(\"NotificationConfiguration\", {})\n    if managed:\n      config = handle_managed(event[\"RequestType\"], notification_configuration)\n    else:\n      config = handle_unmanaged(props[\"BucketName\"], stack_id, event[\"RequestType\"], notification_configuration, old)\n    s3.put_bucket_notification_configuration(Bucket=props[\"BucketName\"], NotificationConfiguration=config)\n  except Exception as e:\n    logging.exception(\"Failed to put bucket notification configuration\")\n    response_status = \"FAILED\"\n    error_message = f\"Error: {str(e)}. \"\n  finally:\n    submit_response(event, context, response_status, error_message)\n\ndef handle_managed(request_type, notification_configuration):\n  if request_type == 'Delete':\n    return {}\n  return notification_configuration\n\ndef handle_unmanaged(bucket, stack_id, request_type, notification_configuration, old):\n  def with_id(n):\n    n['Id'] = f\"{stack_id}-{hash(json.dumps(n, sort_keys=True))}\"\n    return n\n\n  external_notifications = {}\n  existing_notifications = s3.get_bucket_notification_configuration(Bucket=bucket)\n  for t in CONFIGURATION_TYPES:\n    if request_type == 'Update':\n        ids = [with_id(n) for n in old.get(t, [])]\n        old_incoming_ids = [n['Id'] for n in ids]\n        external_notifications[t] = [n for n in existing_notifications.get(t, []) if not n['Id'] in old_incoming_ids]\n    elif request_type == 'Create':\n        external_notifications[t] = [n for n in existing_notifications.get(t, [])]\n  if EVENTBRIDGE_CONFIGURATION in existing_notifications:\n    external_notifications[EVENTBRIDGE_CONFIGURATION] = existing_notifications[EVENTBRIDGE_CONFIGURATION]\n\n  if request_type == 'Delete':\n    return external_notifications\n\n  notifications = {}\n  for t in CONFIGURATION_TYPES:\n    external = external_notifications.get(t, [])\n    incoming = [with_id(n) for n in notification_configuration.get(t, [])]\n    notifications[t] = external + incoming\n\n  if EVENTBRIDGE_CONFIGURATION in notification_configuration:\n    notifications[EVENTBRIDGE_CONFIGURATION] = notification_configuration[EVENTBRIDGE_CONFIGURATION]\n  elif EVENTBRIDGE_CONFIGURATION in external_notifications:\n    notifications[EVENTBRIDGE_CONFIGURATION] = external_notifications[EVENTBRIDGE_CONFIGURATION]\n\n  return notifications\n\ndef submit_response(event: dict, context, response_status: str, error_message: str):\n  response_body = json.dumps(\n    {\n      \"Status\": response_status,\n      \"Reason\": f\"{error_message}See the details in CloudWatch Log Stream: {context.log_stream_name}\",\n      \"PhysicalResourceId\": event.get(\"PhysicalResourceId\") or event[\"LogicalResourceId\"],\n      \"StackId\": event[\"StackId\"],\n      \"RequestId\": event[\"RequestId\"],\n      \"LogicalResourceId\": event[\"LogicalResourceId\"],\n      \"NoEcho\": False,\n    }\n  ).encode(\"utf-8\")\n  headers = {\"content-type\": \"\", \"content-length\": str(len(response_body))}\n  try:\n    req = urllib.request.Request(url=event[\"ResponseURL\"], headers=headers, data=response_body, method=\"PUT\")\n    with urllib.request.urlopen(req) as response:\n      print(response.read().decode(\"utf-8\"))\n    print(\"Status code: \" + response.reason)\n  except Exception as e:\n      print(\"send(..) failed executing request.urlopen(..): \" + str(e))\n"
+    },
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.9",
+    "Timeout": 300
+   },
+   "DependsOn": [
+    "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36",
+    "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource"
+   }
+  },
+  "ApiConstructAccessLogsAD96E729": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 30
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/AccessLogs/Resource"
+   }
+  },
+  "ApiConstructAccessLogsPolicyResourcePolicyCE01D74A": {
+   "Type": "AWS::Logs::ResourcePolicy",
+   "Properties": {
+    "PolicyDocument": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"Statement\":[{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"apigateway.amazonaws.com\"},\"Resource\":\"",
+       {
+        "Fn::GetAtt": [
+         "ApiConstructAccessLogsAD96E729",
+         "Arn"
+        ]
+       },
+       "\"}],\"Version\":\"2012-10-17\"}"
+      ]
+     ]
+    },
+    "PolicyName": "BackendStackApiConstructAccessLogsPolicy46013F70"
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/AccessLogs/Policy/ResourcePolicy"
+   }
+  },
+  "ApiConstructproductSearchApiFEC3A4C5": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Description": "API for product search",
+    "Name": "product-search-api"
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Resource"
+   }
+  },
+  "ApiConstructproductSearchApiCloudWatchRoleFCDFF0CB": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/CloudWatchRole/Resource"
+   }
+  },
+  "ApiConstructproductSearchApiAccountC8D3F8E7": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "ApiConstructproductSearchApiCloudWatchRoleFCDFF0CB",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "ApiConstructproductSearchApiFEC3A4C5"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Account"
+   }
+  },
+  "ApiConstructproductSearchApiDeployment3473CF9515b8ab8bbae56296edcc5e904e4c9938": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "API for product search",
+    "RestApiId": {
+     "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+    }
+   },
+   "DependsOn": [
+    "ApiConstructproductSearchApiOPTIONSC6CC9A6E",
+    "ApiConstructproductSearchApisearchimageOPTIONS04396F56",
+    "ApiConstructproductSearchApisearchimagePOST9E338EF4",
+    "ApiConstructproductSearchApisearchimage52132296",
+    "ApiConstructproductSearchApisearchOPTIONSEA7643A9",
+    "ApiConstructproductSearchApisearchC90A363B",
+    "ApiConstructproductSearchApisearchtextOPTIONS2BCAF157",
+    "ApiConstructproductSearchApisearchtextPOSTCD72F225",
+    "ApiConstructproductSearchApisearchtext7BFAD86E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Deployment/Resource"
+   }
+  },
+  "ApiConstructproductSearchApiDeploymentStageprodC834B417": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "AccessLogSetting": {
+     "DestinationArn": {
+      "Fn::GetAtt": [
+       "ApiConstructAccessLogsAD96E729",
+       "Arn"
+      ]
+     },
+     "Format": "{\"requestId\":\"$context.requestId\",\"ip\":\"$context.identity.sourceIp\",\"user\":\"$context.identity.user\",\"caller\":\"$context.identity.caller\",\"requestTime\":\"$context.requestTime\",\"httpMethod\":\"$context.httpMethod\",\"resourcePath\":\"$context.resourcePath\",\"status\":\"$context.status\",\"protocol\":\"$context.protocol\",\"responseLength\":\"$context.responseLength\"}"
+    },
+    "DeploymentId": {
+     "Ref": "ApiConstructproductSearchApiDeployment3473CF9515b8ab8bbae56296edcc5e904e4c9938"
+    },
+    "RestApiId": {
+     "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+    },
+    "StageName": "prod"
+   },
+   "DependsOn": [
+    "ApiConstructproductSearchApiAccountC8D3F8E7"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/DeploymentStage.prod/Resource"
+   }
+  },
+  "ApiConstructproductSearchApiOPTIONSC6CC9A6E": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "ApiConstructproductSearchApiFEC3A4C5",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Default/OPTIONS/Resource"
+   }
+  },
+  "ApiConstructproductSearchApisearchC90A363B": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "ApiConstructproductSearchApiFEC3A4C5",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "search",
+    "RestApiId": {
+     "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Default/search/Resource"
+   }
+  },
+  "ApiConstructproductSearchApisearchOPTIONSEA7643A9": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ApiConstructproductSearchApisearchC90A363B"
+    },
+    "RestApiId": {
+     "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Default/search/OPTIONS/Resource"
+   }
+  },
+  "ApiConstructproductSearchApisearchimage52132296": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ApiConstructproductSearchApisearchC90A363B"
+    },
+    "PathPart": "image",
+    "RestApiId": {
+     "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Default/search/image/Resource"
+   }
+  },
+  "ApiConstructproductSearchApisearchimageOPTIONS04396F56": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ApiConstructproductSearchApisearchimage52132296"
+    },
+    "RestApiId": {
+     "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Default/search/image/OPTIONS/Resource"
+   }
+  },
+  "ApiConstructproductSearchApisearchimagePOSTApiPermissionBackendStackApiConstructproductSearchApi7AA8136BPOSTsearchimage202D7D5A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "LambdaConstructImageSearchAA3AD075",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+       },
+       "/",
+       {
+        "Ref": "ApiConstructproductSearchApiDeploymentStageprodC834B417"
+       },
+       "/POST/search/image"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Default/search/image/POST/ApiPermission.BackendStackApiConstructproductSearchApi7AA8136B.POST..search.image"
+   }
+  },
+  "ApiConstructproductSearchApisearchimagePOSTApiPermissionTestBackendStackApiConstructproductSearchApi7AA8136BPOSTsearchimageB7B47370": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "LambdaConstructImageSearchAA3AD075",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+       },
+       "/test-invoke-stage/POST/search/image"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Default/search/image/POST/ApiPermission.Test.BackendStackApiConstructproductSearchApi7AA8136B.POST..search.image"
+   }
+  },
+  "ApiConstructproductSearchApisearchimagePOST9E338EF4": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "LambdaConstructImageSearchAA3AD075",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ApiConstructproductSearchApisearchimage52132296"
+    },
+    "RestApiId": {
+     "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Default/search/image/POST/Resource"
+   }
+  },
+  "ApiConstructproductSearchApisearchtext7BFAD86E": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "ApiConstructproductSearchApisearchC90A363B"
+    },
+    "PathPart": "text",
+    "RestApiId": {
+     "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Default/search/text/Resource"
+   }
+  },
+  "ApiConstructproductSearchApisearchtextOPTIONS2BCAF157": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "ApiConstructproductSearchApisearchtext7BFAD86E"
+    },
+    "RestApiId": {
+     "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Default/search/text/OPTIONS/Resource"
+   }
+  },
+  "ApiConstructproductSearchApisearchtextPOSTApiPermissionBackendStackApiConstructproductSearchApi7AA8136BPOSTsearchtextB22E2B12": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "LambdaConstructTextSearch76466F7B",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+       },
+       "/",
+       {
+        "Ref": "ApiConstructproductSearchApiDeploymentStageprodC834B417"
+       },
+       "/POST/search/text"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Default/search/text/POST/ApiPermission.BackendStackApiConstructproductSearchApi7AA8136B.POST..search.text"
+   }
+  },
+  "ApiConstructproductSearchApisearchtextPOSTApiPermissionTestBackendStackApiConstructproductSearchApi7AA8136BPOSTsearchtextBE014BA8": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "LambdaConstructTextSearch76466F7B",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:",
+       {
+        "Ref": "AWS::Region"
+       },
+       ":",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+       },
+       "/test-invoke-stage/POST/search/text"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Default/search/text/POST/ApiPermission.Test.BackendStackApiConstructproductSearchApi7AA8136B.POST..search.text"
+   }
+  },
+  "ApiConstructproductSearchApisearchtextPOSTCD72F225": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:",
+        {
+         "Ref": "AWS::Region"
+        },
+        ":lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "LambdaConstructTextSearch76466F7B",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "ApiConstructproductSearchApisearchtext7BFAD86E"
+    },
+    "RestApiId": {
+     "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/Default/search/text/POST/Resource"
+   }
+  },
+  "ApiConstructproductSearchApiusageplanC35B890D": {
+   "Type": "AWS::ApiGateway::UsagePlan",
+   "Properties": {
+    "ApiStages": [
+     {
+      "ApiId": {
+       "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+      },
+      "Stage": {
+       "Ref": "ApiConstructproductSearchApiDeploymentStageprodC834B417"
+      },
+      "Throttle": {}
+     }
+    ],
+    "Description": "usage plan",
+    "Throttle": {
+     "BurstLimit": 200,
+     "RateLimit": 100
+    },
+    "UsagePlanName": "dev-docs-plan"
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/ApiConstruct/productSearchApi/usage-plan/Resource"
+   }
+  },
+  "WafV2ConstructDevIpSet67B0223E": {
+   "Type": "AWS::WAFv2::IPSet",
+   "Properties": {
+    "Addresses": [
+     "108.236.149.123/32"
+    ],
+    "Description": "List of allowed IP addresses",
+    "IPAddressVersion": "IPV4",
+    "Scope": "REGIONAL"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/WafV2Construct/DevIpSet"
+   }
+  },
+  "WafV2ConstructWebACL2B06511E": {
+   "Type": "AWS::WAFv2::WebACL",
+   "Properties": {
+    "DefaultAction": {
+     "Block": {}
+    },
+    "Rules": [
+     {
+      "Action": {
+       "Allow": {}
+      },
+      "Name": "IPAllowList",
+      "Priority": 1,
+      "Statement": {
+       "IPSetReferenceStatement": {
+        "Arn": {
+         "Fn::GetAtt": [
+          "WafV2ConstructDevIpSet67B0223E",
+          "Arn"
+         ]
+        }
+       }
+      },
+      "VisibilityConfig": {
+       "CloudWatchMetricsEnabled": true,
+       "MetricName": "IPAllowList",
+       "SampledRequestsEnabled": true
+      }
+     }
+    ],
+    "Scope": "REGIONAL",
+    "VisibilityConfig": {
+     "CloudWatchMetricsEnabled": true,
+     "MetricName": "webACL",
+     "SampledRequestsEnabled": true
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/WafV2Construct/WebACL"
+   }
+  },
+  "WafV2ConstructWebACLAssociationD3BF67D7": {
+   "Type": "AWS::WAFv2::WebACLAssociation",
+   "Properties": {
+    "ResourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:apigateway:",
+       {
+        "Ref": "AWS::Region"
+       },
+       "::/restapis/",
+       {
+        "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+       },
+       "/stages/",
+       {
+        "Ref": "ApiConstructproductSearchApiDeploymentStageprodC834B417"
+       }
+      ]
+     ]
+    },
+    "WebACLArn": {
+     "Fn::GetAtt": [
+      "WafV2ConstructWebACL2B06511E",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "ApiConstructproductSearchApiAccountC8D3F8E7",
+    "ApiConstructproductSearchApiCloudWatchRoleFCDFF0CB",
+    "ApiConstructproductSearchApiOPTIONSC6CC9A6E",
+    "ApiConstructproductSearchApisearchimageOPTIONS04396F56",
+    "ApiConstructproductSearchApisearchimagePOSTApiPermissionBackendStackApiConstructproductSearchApi7AA8136BPOSTsearchimage202D7D5A",
+    "ApiConstructproductSearchApisearchimagePOSTApiPermissionTestBackendStackApiConstructproductSearchApi7AA8136BPOSTsearchimageB7B47370",
+    "ApiConstructproductSearchApisearchimagePOST9E338EF4",
+    "ApiConstructproductSearchApisearchimage52132296",
+    "ApiConstructproductSearchApisearchOPTIONSEA7643A9",
+    "ApiConstructproductSearchApisearchC90A363B",
+    "ApiConstructproductSearchApisearchtextOPTIONS2BCAF157",
+    "ApiConstructproductSearchApisearchtextPOSTApiPermissionBackendStackApiConstructproductSearchApi7AA8136BPOSTsearchtextB22E2B12",
+    "ApiConstructproductSearchApisearchtextPOSTApiPermissionTestBackendStackApiConstructproductSearchApi7AA8136BPOSTsearchtextBE014BA8",
+    "ApiConstructproductSearchApisearchtextPOSTCD72F225",
+    "ApiConstructproductSearchApisearchtext7BFAD86E",
+    "ApiConstructproductSearchApiDeployment3473CF9515b8ab8bbae56296edcc5e904e4c9938",
+    "ApiConstructproductSearchApiDeploymentStageprodC834B417",
+    "ApiConstructproductSearchApiFEC3A4C5",
+    "ApiConstructproductSearchApiusageplanC35B890D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/WafV2Construct/WebACLAssociation"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/21STW/bMAz9Lbkraj4uPc71sKFA2nkOth0DRmZcJbLoiZKzwPB/HyzHcQL0xMevxweSK7lcL+ViBmeeq+I0N3ov260HdRJw5l3La9m+BHVCL9KDvaLBZGS0ukzhqz84L8DYCQPVvgDZpgeboas0syYrvgWrfA/Sgx1xJ6hGywhOfTC6Bp1B5ti5RRWc9pdpXkrG4I0iUQqZh2wnNFSyfQMLJRZTx2MgJ4N9NNqpaKTg9Q6Y0bNMeiMMlSzbDZU5erRx7IbK745C3bfdcI5MwSmcGB8j4z52lgo8snyP5rYN/suy/RkwRG0RdAJqXYLHM1xkmyP7pNZX4hEmSlGwXnzF2tClQhsvdedtPZSRcgCjpv5C4g39BxVxQwMas/fqxS+GEjMDcd03pxNnODSreKPXbDt8yB/cJ+lmQgkzKQ3xxJ1IA3uqPp3xmMocNbpAF0XGK/TitS0fBKZkCz2+wY/g6+CFijw7dy1jOVJ1YiGX8nk9+6KKk4E9P5Vo0YHXDc5Bx+9XZNm7oDzL9tN//I3Kk7v7v6lq18SctgX+u9a99rgT/bnlkZ+a1UIuF3IxO7LWcxes1xXKfLD/AY5xiMiJAwAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "BackendStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Conditions": {
+  "VectorCollectionConstructproductscollectionIsDataAccessPolicyNotEmpty30E5CFEE": {
+   "Fn::Not": [
+    {
+     "Fn::Equals": [
+      0,
+      3
+     ]
+    }
+   ]
+  },
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Outputs": {
+  "VectorCollectionConstructCollectionEndpointF96FD23A": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Fn::GetAtt": [
+        "VectorCollectionConstructproductscollectionVectorCollectionCFEF8E30",
+        "Id"
+       ]
+      },
+      ".",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".aoss.amazonaws.com"
+     ]
+    ]
+   }
+  },
+  "ApiConstructproductSearchApiEndpoint70382036": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ApiConstructproductSearchApiDeploymentStageprodC834B417"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "ApiConstructAPIGatewayUrl6AF5DA48": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "ApiConstructproductSearchApiFEC3A4C5"
+      },
+      ".execute-api.",
+      {
+       "Ref": "AWS::Region"
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ApiConstructproductSearchApiDeploymentStageprodC834B417"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

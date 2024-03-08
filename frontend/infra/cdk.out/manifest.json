@@ -1,0 +1,179 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "InfraStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "InfraStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "InfraStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "InfraStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/15ed18743e25e3e0eb1c6ce147d3b2efcee93495f2066da0d7962bbdd2a511f7.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "InfraStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "InfraStack.assets"
+      ],
+      "metadata": {
+        "/InfraStack/CloudFrontOriginAccessIdentity/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudFrontOriginAccessIdentity04EB66DA"
+          }
+        ],
+        "/InfraStack/s3HostingBucket": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "Unable to add necessary logging permissions to imported target bucket: InfraStack/loggingBucket [ack: @aws-cdk/aws-s3:accessLogsPolicyNotAdded]",
+            "trace": [
+              "Annotations.addMessage (/Users/raamak/code/amazon-titan-multimodal-embeddings/frontend/infra/node_modules/aws-cdk-lib/core/lib/annotations.js:1:1608)",
+              "Annotations.addWarningV2 (/Users/raamak/code/amazon-titan-multimodal-embeddings/frontend/infra/node_modules/aws-cdk-lib/core/lib/annotations.js:1:825)",
+              "new Bucket (/Users/raamak/code/amazon-titan-multimodal-embeddings/frontend/infra/node_modules/aws-cdk-lib/aws-s3/lib/bucket.js:1:22760)",
+              "new InfraStack (/Users/raamak/code/amazon-titan-multimodal-embeddings/frontend/infra/lib/infra-stack.ts:19:29)",
+              "Object.<anonymous> (/Users/raamak/code/amazon-titan-multimodal-embeddings/frontend/infra/bin/infra.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1376:14)",
+              "Module.m._compile (/Users/raamak/code/amazon-titan-multimodal-embeddings/frontend/node_modules/ts-node/src/index.ts:1618:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1435:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/raamak/code/amazon-titan-multimodal-embeddings/frontend/node_modules/ts-node/src/index.ts:1621:12)",
+              "Module.load (node:internal/modules/cjs/loader:1207:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:1023:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:135:12)",
+              "phase4 (/Users/raamak/code/amazon-titan-multimodal-embeddings/frontend/node_modules/ts-node/src/bin.ts:649:14)",
+              "bootstrap (/Users/raamak/code/amazon-titan-multimodal-embeddings/frontend/node_modules/ts-node/src/bin.ts:95:10)",
+              "main (/Users/raamak/code/amazon-titan-multimodal-embeddings/frontend/node_modules/ts-node/src/bin.ts:55:10)",
+              "Object.<anonymous> (/Users/raamak/code/amazon-titan-multimodal-embeddings/frontend/node_modules/ts-node/src/bin.ts:800:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1376:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1435:10)",
+              "Module.load (node:internal/modules/cjs/loader:1207:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:1023:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:135:12)",
+              "node:internal/main/run_main_module:28:49"
+            ]
+          }
+        ],
+        "/InfraStack/s3HostingBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "s3HostingBucket77870A2D"
+          }
+        ],
+        "/InfraStack/s3HostingBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "s3HostingBucketPolicyBB89F7D5"
+          }
+        ],
+        "/InfraStack/s3HostingBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "s3HostingBucketAutoDeleteObjectsCustomResourceD6DAC279"
+          }
+        ],
+        "/InfraStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/InfraStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/InfraStack/cloudFrontDistribution/CFDistribution": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "cloudFrontDistributionCFDistribution180F7EF5"
+          }
+        ],
+        "/InfraStack/WebsiteDeployment/AwsCliLayer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebsiteDeploymentAwsCliLayer5BFD2264"
+          }
+        ],
+        "/InfraStack/WebsiteDeployment/CustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebsiteDeploymentCustomResourceA1782F82"
+          }
+        ],
+        "/InfraStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+          }
+        ],
+        "/InfraStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF"
+          }
+        ],
+        "/InfraStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536"
+          }
+        ],
+        "/InfraStack/URL": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "URL"
+          }
+        ],
+        "/InfraStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/InfraStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/InfraStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/InfraStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "InfraStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

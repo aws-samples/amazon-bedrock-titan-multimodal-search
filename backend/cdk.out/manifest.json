@@ -1,0 +1,593 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "BackendStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "BackendStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "BackendStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "BackendStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4c610d41874d638fad82f36f8e823e9fd18592e73fafa66d879e986b76617c4f.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "BackendStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "BackendStack.assets"
+      ],
+      "metadata": {
+        "/BackendStack/S3Construct/s3LogsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3Constructs3LogsBucketD5E44EC7"
+          }
+        ],
+        "/BackendStack/S3Construct/s3LogsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3Constructs3LogsBucketPolicyFCDFF42A"
+          }
+        ],
+        "/BackendStack/S3Construct/s3LogsBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3Constructs3LogsBucketAutoDeleteObjectsCustomResourceF3A3860A"
+          }
+        ],
+        "/BackendStack/S3Construct/ingestbucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3Constructingestbucket680F5E47"
+          }
+        ],
+        "/BackendStack/S3Construct/ingestbucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3ConstructingestbucketPolicyE93B4B13"
+          }
+        ],
+        "/BackendStack/S3Construct/ingestbucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3ConstructingestbucketAutoDeleteObjectsCustomResource65EA8F3D"
+          }
+        ],
+        "/BackendStack/S3Construct/ingestbucket/Notifications/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3ConstructingestbucketNotifications8E5BCF21"
+          }
+        ],
+        "/BackendStack/S3Construct/ingestbucket/AllowBucketNotificationsToBackendStackLambdaConstructBatchInputE9A0346A": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3ConstructingestbucketAllowBucketNotificationsToBackendStackLambdaConstructBatchInputE9A0346AA964353F"
+          }
+        ],
+        "/BackendStack/S3Construct/ingestbucket/AllowBucketNotificationsToBackendStackLambdaConstructGenerateEmbeddingsE858EAF1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3ConstructingestbucketAllowBucketNotificationsToBackendStackLambdaConstructGenerateEmbeddingsE858EAF10AEDCB47"
+          }
+        ],
+        "/BackendStack/S3Construct/embeddingsbucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3Constructembeddingsbucket88627F39"
+          }
+        ],
+        "/BackendStack/S3Construct/embeddingsbucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3ConstructembeddingsbucketPolicyCF2EE5F1"
+          }
+        ],
+        "/BackendStack/S3Construct/embeddingsbucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3ConstructembeddingsbucketAutoDeleteObjectsCustomResourceA0C29900"
+          }
+        ],
+        "/BackendStack/S3Construct/embeddingsbucket/Notifications/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3ConstructembeddingsbucketNotifications02E8C4ED"
+          }
+        ],
+        "/BackendStack/S3Construct/embeddingsbucket/AllowBucketNotificationsToBackendStackLambdaConstructSaveEmbeddings1B1FB0AC": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "S3ConstructembeddingsbucketAllowBucketNotificationsToBackendStackLambdaConstructSaveEmbeddings1B1FB0AC85078536"
+          }
+        ],
+        "/BackendStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/BackendStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/BackendStack/VectorCollectionConstruct/products-collection/EncryptionPolicy": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VectorCollectionConstructproductscollectionEncryptionPolicy8A780569"
+          }
+        ],
+        "/BackendStack/VectorCollectionConstruct/products-collection/NetworkPolicy": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VectorCollectionConstructproductscollectionNetworkPolicy9331563C"
+          }
+        ],
+        "/BackendStack/VectorCollectionConstruct/products-collection/VectorCollection": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VectorCollectionConstructproductscollectionVectorCollectionCFEF8E30"
+          }
+        ],
+        "/BackendStack/VectorCollectionConstruct/products-collection/AOSSApiAccessAll/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VectorCollectionConstructproductscollectionAOSSApiAccessAllB1CF1B95"
+          }
+        ],
+        "/BackendStack/VectorCollectionConstruct/products-collection/IsDataAccessPolicyNotEmpty": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VectorCollectionConstructproductscollectionIsDataAccessPolicyNotEmpty30E5CFEE"
+          }
+        ],
+        "/BackendStack/VectorCollectionConstruct/products-collection/DataAccessPolicy": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VectorCollectionConstructproductscollectionDataAccessPolicyACDC6B05"
+          }
+        ],
+        "/BackendStack/VectorCollectionConstruct/productsIndex/ManageIndexPolicy": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VectorCollectionConstructproductsIndexManageIndexPolicyA29A97D4"
+          }
+        ],
+        "/BackendStack/VectorCollectionConstruct/productsIndex/VectorIndex/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VectorCollectionConstructproductsIndexVectorIndexAD58CD46"
+          }
+        ],
+        "/BackendStack/VectorCollectionConstruct/CollectionEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VectorCollectionConstructCollectionEndpointF96FD23A"
+          }
+        ],
+        "/BackendStack/OpenSearchIndexCRProvider/CRRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenSearchIndexCRProviderCRRole466FC04E"
+          }
+        ],
+        "/BackendStack/OpenSearchIndexCRProvider/CustomResourcesFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenSearchIndexCRProviderCustomResourcesFunction4F9ADEA2"
+          }
+        ],
+        "/BackendStack/OpenSearchIndexCRProvider/CustomResourcesFunction/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenSearchIndexCRProviderCustomResourcesFunctionLogRetentionC32546EF"
+          }
+        ],
+        "/BackendStack/OpenSearchIndexCRProvider/ProviderRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenSearchIndexCRProviderProviderRole87B4E831"
+          }
+        ],
+        "/BackendStack/OpenSearchIndexCRProvider/ProviderRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenSearchIndexCRProviderProviderRoleDefaultPolicy9810CB1F"
+          }
+        ],
+        "/BackendStack/OpenSearchIndexCRProvider/Provider/framework-onEvent/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenSearchIndexCRProviderframeworkonEvent6CAE4696"
+          }
+        ],
+        "/BackendStack/OpenSearchIndexCRProvider/Provider/framework-onEvent/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OpenSearchIndexCRProviderframeworkonEventLogRetention64E7FA2B"
+          }
+        ],
+        "/BackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+          }
+        ],
+        "/BackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB"
+          }
+        ],
+        "/BackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/BatchInput/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructBatchInputServiceRole77861EC0"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/BatchInput/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructBatchInputServiceRoleDefaultPolicy5CC40485"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/BatchInput/DeadLetterQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructBatchInputDeadLetterQueueFA5D1C1D"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/BatchInput/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructBatchInput15570621"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/BatchInput/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructBatchInputLogRetention57C63AF6"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/GenerateEmbeddings/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructGenerateEmbeddingsServiceRoleC009A3F8"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/GenerateEmbeddings/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructGenerateEmbeddingsServiceRoleDefaultPolicy2CD8D927"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/GenerateEmbeddings/DeadLetterQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructGenerateEmbeddingsDeadLetterQueue2A7FD7AE"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/GenerateEmbeddings/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructGenerateEmbeddings414066ED"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/GenerateEmbeddings/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructGenerateEmbeddingsLogRetentionE7744B57"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/SaveEmbeddings/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructSaveEmbeddingsServiceRole09544853"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/SaveEmbeddings/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructSaveEmbeddingsServiceRoleDefaultPolicy2EEE263D"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/SaveEmbeddings/DeadLetterQueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructSaveEmbeddingsDeadLetterQueue173AAF91"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/SaveEmbeddings/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructSaveEmbeddingsA05C0F60"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/SaveEmbeddings/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructSaveEmbeddingsLogRetentionA1DF5117"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/TextSearch/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructTextSearchServiceRoleAAC5B33F"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/TextSearch/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructTextSearchServiceRoleDefaultPolicyDD0FE881"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/TextSearch/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructTextSearch76466F7B"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/TextSearch/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructTextSearchLogRetentionC454B394"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/ImageSearch/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructImageSearchServiceRole288F5C93"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/ImageSearch/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructImageSearchServiceRoleDefaultPolicy79D741E0"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/ImageSearch/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructImageSearchAA3AD075"
+          }
+        ],
+        "/BackendStack/LambdaConstruct/ImageSearch/LogRetention/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaConstructImageSearchLogRetention7B5E835A"
+          }
+        ],
+        "/BackendStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleB6FB88EC"
+          }
+        ],
+        "/BackendStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db834RoleDefaultPolicy2CF63D36"
+          }
+        ],
+        "/BackendStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BucketNotificationsHandler050a0587b7544547bf325f094a3db8347ECC3691"
+          }
+        ],
+        "/BackendStack/ApiConstruct/AccessLogs/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructAccessLogsAD96E729"
+          }
+        ],
+        "/BackendStack/ApiConstruct/AccessLogs/Policy/ResourcePolicy": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructAccessLogsPolicyResourcePolicyCE01D74A"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApiFEC3A4C5"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/CloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApiCloudWatchRoleFCDFF0CB"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Account": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApiAccountC8D3F8E7"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApiDeployment3473CF9515b8ab8bbae56296edcc5e904e4c9938"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApiDeploymentStageprodC834B417"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApiEndpoint70382036"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApiOPTIONSC6CC9A6E"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Default/search/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApisearchC90A363B"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Default/search/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApisearchOPTIONSEA7643A9"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Default/search/image/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApisearchimage52132296"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Default/search/image/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApisearchimageOPTIONS04396F56"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Default/search/image/POST/ApiPermission.BackendStackApiConstructproductSearchApi7AA8136B.POST..search.image": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApisearchimagePOSTApiPermissionBackendStackApiConstructproductSearchApi7AA8136BPOSTsearchimage202D7D5A"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Default/search/image/POST/ApiPermission.Test.BackendStackApiConstructproductSearchApi7AA8136B.POST..search.image": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApisearchimagePOSTApiPermissionTestBackendStackApiConstructproductSearchApi7AA8136BPOSTsearchimageB7B47370"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Default/search/image/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApisearchimagePOST9E338EF4"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Default/search/text/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApisearchtext7BFAD86E"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Default/search/text/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApisearchtextOPTIONS2BCAF157"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Default/search/text/POST/ApiPermission.BackendStackApiConstructproductSearchApi7AA8136B.POST..search.text": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApisearchtextPOSTApiPermissionBackendStackApiConstructproductSearchApi7AA8136BPOSTsearchtextB22E2B12"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Default/search/text/POST/ApiPermission.Test.BackendStackApiConstructproductSearchApi7AA8136B.POST..search.text": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApisearchtextPOSTApiPermissionTestBackendStackApiConstructproductSearchApi7AA8136BPOSTsearchtextBE014BA8"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/Default/search/text/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApisearchtextPOSTCD72F225"
+          }
+        ],
+        "/BackendStack/ApiConstruct/productSearchApi/usage-plan/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructproductSearchApiusageplanC35B890D"
+          }
+        ],
+        "/BackendStack/ApiConstruct/APIGatewayUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiConstructAPIGatewayUrl6AF5DA48"
+          }
+        ],
+        "/BackendStack/WafV2Construct/DevIpSet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WafV2ConstructDevIpSet67B0223E"
+          }
+        ],
+        "/BackendStack/WafV2Construct/WebACL": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WafV2ConstructWebACL2B06511E"
+          }
+        ],
+        "/BackendStack/WafV2Construct/WebACLAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WafV2ConstructWebACLAssociationD3BF67D7"
+          }
+        ],
+        "/BackendStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/BackendStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/BackendStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/BackendStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "BackendStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
