@@ -1,0 +1,24 @@
+{
+  "name": "lambda",
+  "packageManager": "yarn@4.1.1",
+  "devDependencies": {
+    "@aws-lambda-powertools/commons": "^2.0.2",
+    "@aws-lambda-powertools/logger": "^2.0.2",
+    "@aws-lambda-powertools/metrics": "^2.0.2",
+    "@aws-lambda-powertools/tracer": "^2.0.2",
+    "@aws-sdk/client-bedrock-runtime": "^3.529.1",
+    "@aws-sdk/client-s3": "^3.529.1",
+    "@aws-sdk/credential-provider-node": "^3.529.1",
+    "@types/aws-lambda": "^8.10.136"
+  },
+  "installConfig": {
+    "hoistingLimits": "workspaces"
+  },
+  "dependencies": {
+    "@middy/core": "^5.2.6",
+    "@middy/http-header-normalizer": "^5.2.6",
+    "@middy/http-json-body-parser": "^5.2.6",
+    "@opensearch-project/opensearch": "^2.6.0",
+    "node-fetch": "^3.3.2"
+  }
+}

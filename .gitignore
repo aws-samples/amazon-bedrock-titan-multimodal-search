@@ -1,0 +1,10 @@
+backend/.yarn
+*.js
+!jest.config.js
+*.d.ts
+backend/node_modules
+backend/lambda/node_modules
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+backend/lambda/.yarn
