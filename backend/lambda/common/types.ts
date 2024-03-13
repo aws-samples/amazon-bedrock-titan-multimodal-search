@@ -16,6 +16,6 @@ export type InputJsonType = {
 }
 
 export type EmbeddingErrorType = {
-  image_url: string;
+  image_path: string;
   error: string;
 }

@@ -15,11 +15,13 @@ import { APIGatewayProxyResult } from "aws-lambda";
 import { Utils } from "../common/utils";
 import { BedrockRuntimeClient } from "@aws-sdk/client-bedrock-runtime";
 import { Client } from "@opensearch-project/opensearch/.";
+import { S3Client } from "@aws-sdk/client-s3";
 
 const logger = new Logger();
 const tracer = new Tracer();
 const metrics = new Metrics();
 const utils: Utils = new Utils();
+const s3Client = new S3Client({ region: process.env.AWS_REGION });
 const client: Client = utils.getOSSClient();
 const bedrockClient = new BedrockRuntimeClient({
   region: process.env.AWS_REGION,
@@ -47,7 +49,6 @@ exports.handler = middy()
         logger.error("Error", { message: error_msg });
         return utils.makeResults(500, { error: error_msg });
       }
-
       const input = JSON.stringify({
         inputImage: imageInput,
       });
@@ -58,6 +59,11 @@ exports.handler = middy()
       );
 
       const result = await utils.getOSSQueryResonse(client, multiModalVector);
+
+      for await (let product of result.hits) {
+        const image_path = await utils.createPresignedUrl(s3Client, product._source.image_path);
+        product._source.image_path = image_path;
+      }
 
       metrics.addMetric(
         "successfulImageSearch",

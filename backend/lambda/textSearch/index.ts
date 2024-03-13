@@ -11,12 +11,14 @@ import { APIGatewayProxyResult } from 'aws-lambda';
 import { Utils } from '../common/utils';
 import { BedrockRuntimeClient } from '@aws-sdk/client-bedrock-runtime';
 import { Client } from '@opensearch-project/opensearch/.';
+import { S3Client } from '@aws-sdk/client-s3';
 
 const logger = new Logger();
 const tracer = new Tracer();
 const metrics = new Metrics();
 const utils: Utils = new Utils();
 const client: Client = utils.getOSSClient();
+const s3Client = new S3Client({ region: process.env.AWS_REGION });
 const bedrockClient = new BedrockRuntimeClient({
   region: process.env.AWS_REGION,
 });
@@ -54,9 +56,12 @@ async function textSearch(event: Event & VersionedApiGatewayEvent): Promise<APIG
       input
     );
 
-    logger.info('vector', {multiModalVector});
-
     const result = await utils.getOSSQueryResonse(client, multiModalVector);
+
+    for await (let product of result.hits) {
+      const image_path = await utils.createPresignedUrl(s3Client, product._source.image_path);
+      product._source.image_path = image_path;
+    }
 
     metrics.addMetric(
       "successfulTextSearch",
