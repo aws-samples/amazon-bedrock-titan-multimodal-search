@@ -82,6 +82,7 @@ export class LambdaConstruct extends Construct {
       environment: {
         ...commonNodejsProps.environment,
         REGION: region,
+        INGEST_BUCKET: props.ingestBucket.bucketName,
         MODEL_ID: 'amazon.titan-embed-image-v1',
         COLLECTION_ENDPOINT: props.collectionEndpoint,
         INDEX_NAME: props.indexName,
@@ -98,6 +99,7 @@ export class LambdaConstruct extends Construct {
       environment: {
         ...commonNodejsProps.environment,
         REGION: region,
+        INGEST_BUCKET: props.ingestBucket.bucketName,
         MODEL_ID: 'amazon.titan-embed-image-v1',
         COLLECTION_ENDPOINT: props.collectionEndpoint,
         INDEX_NAME: props.indexName,
@@ -125,11 +127,15 @@ export class LambdaConstruct extends Construct {
   
     props.embeddingsBucket.grantReadWrite(this.generateEmbeddingsLambda);
     props.ingestBucket.grantRead(this.generateEmbeddingsLambda, 'batch/*');
+    props.ingestBucket.grantRead(this.generateEmbeddingsLambda, 'images/*');
+
     props.ingestBucket.grantRead(this.batchInputLambda, 'ingest/*');
     props.ingestBucket.grantWrite(this.batchInputLambda, 'batch/*');
+
     props.embeddingsBucket.grantReadWrite(this.saveEmbeddingsLambda);
-    props.ingestBucket.grantRead(this.textSearchLambda);
-    props.ingestBucket.grantRead(this.imageSearchLambda);
+
+    props.ingestBucket.grantRead(this.textSearchLambda, 'images/*');
+    props.ingestBucket.grantRead(this.imageSearchLambda, 'images/*');
 
     const policyStatement: PolicyStatement = new PolicyStatement({
       actions: [

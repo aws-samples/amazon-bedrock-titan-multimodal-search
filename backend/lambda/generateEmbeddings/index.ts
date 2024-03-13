@@ -52,7 +52,8 @@ async function generateEmbeddings(event: S3Event): Promise<void> {
     for await (const inputJson of inputJsonArray) {
       try {
         const imageBase64Data: string = await utils.getImageBase64DataString(
-          inputJson.image_url
+          s3Client,
+          inputJson.image_path
         );
         // logger.debug(`Image Base 64 value length: ${imageBase64Data.length}`);
 
@@ -76,7 +77,7 @@ async function generateEmbeddings(event: S3Event): Promise<void> {
         });
       } catch (err) {
         failedProductEmbeddings.push({
-          image_url: inputJson.image_url,
+          image_path: inputJson.image_path,
           error: (err as Error).message,
         });
         logger.error('ERROR' , {err});

@@ -1,20 +1,20 @@
-import { Logger } from '@aws-lambda-powertools/logger';
+import { Logger } from "@aws-lambda-powertools/logger";
 import {
   InvokeModelCommandOutput,
   InvokeModelCommand,
   BedrockRuntimeClient,
-} from '@aws-sdk/client-bedrock-runtime';
+} from "@aws-sdk/client-bedrock-runtime";
 import {
   GetObjectCommand,
   GetObjectCommandOutput,
   PutObjectCommand,
   S3Client,
-} from '@aws-sdk/client-s3';
-import { S3Event } from 'aws-lambda';
-import fetch from 'node-fetch';
-import { defaultProvider } from '@aws-sdk/credential-provider-node'; // V3 SDK.
-import { Client as ossClient } from '@opensearch-project/opensearch';
-import { AwsSigv4Signer } from '@opensearch-project/opensearch/aws';
+} from "@aws-sdk/client-s3";
+import { S3Event } from "aws-lambda";
+import { defaultProvider } from "@aws-sdk/credential-provider-node"; // V3 SDK.
+import { Client as ossClient } from "@opensearch-project/opensearch";
+import { AwsSigv4Signer } from "@opensearch-project/opensearch/aws";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 export class Utils {
   makeResults(statusCode: number, body: object) {
@@ -22,7 +22,7 @@ export class Utils {
       statusCode: statusCode,
       body: JSON.stringify(body),
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
       },
     };
   }
@@ -40,15 +40,13 @@ export class Utils {
   async fetchResponseFromS3(event: S3Event, s3: S3Client) {
     const bucket = event.Records[0].s3.bucket.name;
     const key = decodeURIComponent(
-      event.Records[0].s3.object.key.replace(/\+/g, ' ')
+      event.Records[0].s3.object.key.replace(/\+/g, " ")
     );
 
-    // Function to read json file from S3 and save to temp file
     const response: GetObjectCommandOutput = await s3.send(
       new GetObjectCommand({ Bucket: bucket, Key: key })
     );
-    // function to loop over s3 response
-    const responseBodyString = (await response.Body?.transformToString()) ?? '';
+    const responseBodyString = (await response.Body?.transformToString()) ?? "";
     return { responseBodyString, key };
   }
 
@@ -57,13 +55,13 @@ export class Utils {
     input: string
   ) {
     try {
-      const textDecoder = new TextDecoder('utf-8');
-      
+      const textDecoder = new TextDecoder("utf-8");
+
       const invokeResponse: InvokeModelCommandOutput = await bedrockClient.send(
         new InvokeModelCommand({
           modelId: process.env.MODEL_ID,
-          contentType: 'application/json',
-          accept: 'application/json',
+          contentType: "application/json",
+          accept: "application/json",
           body: input,
         })
       );
@@ -75,29 +73,49 @@ export class Utils {
     }
   }
 
-  async getImageBase64DataString(image_url: string): Promise<string> {
-    const response = await fetch(image_url);
-    return Buffer.from(
-      await response.arrayBuffer()
-    ).toString('base64');
+  async getImageBase64DataString(
+    s3Client: S3Client,
+    image_path: string
+  ): Promise<string> {
+    const bucket = process.env.INGEST_BUCKET;
+    const response: GetObjectCommandOutput = await s3Client.send(
+      new GetObjectCommand({ Bucket: bucket, Key: image_path })
+    );
+    const responseBodyString =
+      (await response.Body?.transformToString("base64")) ?? "";
+
+    return responseBodyString;
+    // const response = await fetch(image_url);
+    // return Buffer.from(
+    //   await response.arrayBuffer()
+    // ).toString('base64');
+  }
+
+  async createPresignedUrl(s3Client: S3Client, key: string): Promise<string> {
+    const bucket = process.env.INGEST_BUCKET;
+    const command = new GetObjectCommand({ Bucket: bucket, Key: key });
+    return getSignedUrl(s3Client, command, { expiresIn: 3600 });
   }
 
   getOSSClient(): ossClient {
     return new ossClient({
       ...AwsSigv4Signer({
-        region: process.env.REGION ?? '',
-        service: 'aoss',
+        region: process.env.REGION ?? "",
+        service: "aoss",
         getCredentials: () => {
           const credentialsProvider = defaultProvider();
           return credentialsProvider();
         },
       }),
-      node: process.env.COLLECTION_ENDPOINT ?? '',
+      node: process.env.COLLECTION_ENDPOINT ?? "",
       maxRetries: 3,
     });
   }
 
-  async getOSSQueryResonse(client: ossClient, multiModalVector: number[]): Promise<any> {
+  async getOSSQueryResonse(
+    client: ossClient,
+    multiModalVector: number[]
+  ): Promise<any> {
     const query = {
       size: process.env.QUERY_RESULT_SIZE,
       query: {
@@ -108,7 +126,13 @@ export class Utils {
           },
         },
       },
-      _source: ["image_product_description", "image_path", "image_brand", "image_class", "image_url"],
+      _source: [
+        "image_product_description",
+        "image_path",
+        "image_brand",
+        "image_class",
+        "image_url",
+      ],
     };
 
     const response = await client.search({
