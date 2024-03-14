@@ -1,10 +1,14 @@
 backend/.yarn
+frontend/.yarn
 *.js
 !jest.config.js
 *.d.ts
 backend/node_modules
+frontend/node_modules
 backend/lambda/node_modules
 # CDK asset staging directory
 .cdk.staging
 cdk.out
 backend/lambda/.yarn
+backend/lib/.DS_Store
+backend/lib/constructs/.DS_Store

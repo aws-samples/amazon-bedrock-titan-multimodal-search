@@ -55,7 +55,6 @@ async function generateEmbeddings(event: S3Event): Promise<void> {
           s3Client,
           inputJson.image_path
         );
-        // logger.debug(`Image Base 64 value length: ${imageBase64Data.length}`);
 
         const input = JSON.stringify({
           inputImage: imageBase64Data,
