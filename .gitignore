@@ -12,3 +12,6 @@ cdk.out
 backend/lambda/.yarn
 backend/lib/.DS_Store
 backend/lib/constructs/.DS_Store
+frontend/infra/node_modules
+frontend/build
+

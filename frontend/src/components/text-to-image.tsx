@@ -55,9 +55,9 @@ const TextToImageShowcase: React.FC<Props> = ({baseURL}) => {
         results.map((result :{
             _id: string; _source:any}, index:number) => (                       
             <Col key={result._id}>        
-                <Card style={{ width: '18rem' }} >
+                <Card className='Card-display'>
                     <Card.Header>Result #{index+1}</Card.Header>
-                    <Card.Header>{result._source.image_product_description}</Card.Header>
+                    <Card.Header className='card-title'>{result._source.image_product_description}</Card.Header>
                     <Card.Img src={result._source.image_path} />
                 </Card>
             </Col>

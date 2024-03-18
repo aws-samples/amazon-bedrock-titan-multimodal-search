@@ -23,6 +23,9 @@
 - Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 - Enter the API endpoint URL created through the backend cdk deployment
 
+## Architecture
+<img src="project_assets/AmazonTitanMultimodal_Arch.png">
+
 ## Application Features
 ### Product Image Search
   * Enter the API endpoint URl, click on `Find Similar Products` to view results based on image search. Alternatively you could upload new image by clicking `Change Product` option and performing a search.

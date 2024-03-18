@@ -37,6 +37,8 @@ export class LambdaConstruct extends Construct {
       entry: 'lambda/batchInput/index.ts',
       functionName:'batch-input',
       timeout: Duration.minutes(15),
+      deadLetterQueueEnabled: true,
+      reservedConcurrentExecutions: 1,
       environment: {
         ...commonNodejsProps.environment,
         INGEST_BUCKET: props.ingestBucket.bucketName,
@@ -50,6 +52,8 @@ export class LambdaConstruct extends Construct {
       ...commonNodejsProps,
       entry: 'lambda/generateEmbeddings/index.ts',
       functionName:'generate-embeddings',
+      reservedConcurrentExecutions: 35,
+      deadLetterQueueEnabled: true,
       timeout: Duration.minutes(15),
       environment: {
         ...commonNodejsProps.environment,
@@ -64,7 +68,9 @@ export class LambdaConstruct extends Construct {
       ...commonNodejsProps,
       entry: 'lambda/saveEmbeddings/index.ts',
       functionName:'save-embeddings',
+      reservedConcurrentExecutions: 5,
       timeout: Duration.minutes(15),
+      deadLetterQueueEnabled: true,
       environment: {
         ...commonNodejsProps.environment,
         COLLECTION_ENDPOINT: props.collectionEndpoint,
@@ -78,6 +84,7 @@ export class LambdaConstruct extends Construct {
       ...commonNodejsProps,
       entry: 'lambda/textSearch/index.ts',
       functionName:'product-text-search',
+      reservedConcurrentExecutions: 5,
       timeout: Duration.seconds(29),
       environment: {
         ...commonNodejsProps.environment,
@@ -95,6 +102,7 @@ export class LambdaConstruct extends Construct {
       ...commonNodejsProps,
       entry: 'lambda/imageSearch/index.ts',
       functionName:'product-image-search',
+      reservedConcurrentExecutions: 5,
       timeout: Duration.seconds(29),
       environment: {
         ...commonNodejsProps.environment,
