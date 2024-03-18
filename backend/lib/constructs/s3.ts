@@ -16,6 +16,7 @@ export class S3Construct extends Construct {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       serverAccessLogsPrefix: 'logs/',
       versioned: true,
+      enforceSSL: true
     })
     
     this.ingestBucket = new s3.Bucket(

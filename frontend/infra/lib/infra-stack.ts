@@ -28,6 +28,7 @@ export class InfraStack extends cdk.Stack {
       serverAccessLogsBucket: s3LogsBucket,
       serverAccessLogsPrefix: "hostingBucket/logs/",
       versioned: true,
+      enforceSSL: true,
     });
 
     s3HostingBucket.addToResourcePolicy(
