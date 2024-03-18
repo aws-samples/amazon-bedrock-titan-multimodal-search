@@ -8,6 +8,15 @@ export class S3Construct extends Construct {
 
   constructor(scope: Construct, id: string) {
     super(scope, id);
+
+    const s3LogsBucket = new s3.Bucket(this, 's3LogsBucket', {
+      removalPolicy: RemovalPolicy.DESTROY,
+      accessControl: s3.BucketAccessControl.LOG_DELIVERY_WRITE,
+      autoDeleteObjects: true,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      serverAccessLogsPrefix: 'logs/',
+      versioned: true,
+    })
     
     this.ingestBucket = new s3.Bucket(
       this,
@@ -28,6 +37,8 @@ export class S3Construct extends Construct {
         enforceSSL: true,
         removalPolicy: RemovalPolicy.DESTROY,
         autoDeleteObjects: true,
+        serverAccessLogsBucket: s3LogsBucket,
+        serverAccessLogsPrefix: 'ingestBucket/logs/',
       }
     );
 
@@ -50,6 +61,8 @@ export class S3Construct extends Construct {
         enforceSSL: true,
         removalPolicy: RemovalPolicy.DESTROY,
         autoDeleteObjects: true,
+        serverAccessLogsBucket: s3LogsBucket,
+        serverAccessLogsPrefix: 'embeddingsbucket/logs/'
       }
     );
   }

@@ -15,6 +15,7 @@ import { BedrockRuntimeClient } from "@aws-sdk/client-bedrock-runtime";
 import { env } from "process";
 import { EmbeddingErrorType, InputJsonType, ProductType } from "../common/types";
 import { Utils } from "../common/utils";
+import { ConfiguredRetryStrategy } from "@aws-sdk/util-retry";
 
 const logger = new Logger();
 const tracer = new Tracer();
@@ -22,6 +23,10 @@ const metrics = new Metrics();
 const s3Client = new S3Client({ region: process.env.AWS_REGION });
 const bedrockClient = new BedrockRuntimeClient({
   region: process.env.AWS_REGION,
+  retryStrategy: new ConfiguredRetryStrategy(
+    10, // max attempts.
+    (attempt: number) => 100 + attempt * 5000 // backoff function - 100ms plus 5s per attempt
+  ),
 });
 
 const utils = new Utils();

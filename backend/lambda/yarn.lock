@@ -788,6 +788,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aws-sdk/util-retry@npm:^3.374.0":
+  version: 3.374.0
+  resolution: "@aws-sdk/util-retry@npm:3.374.0"
+  dependencies:
+    "@smithy/util-retry": "npm:^1.0.3"
+    tslib: "npm:^2.5.0"
+  checksum: 10c0/76673d1fa0296aa85d93208385d29ba5a234ef9e44a69caee02ef256e3b13069bf4f8269f803ffa06e4a4bc918170e9602201ed7a7279b55985f3446069bcf70
+  languageName: node
+  linkType: hard
+
 "@aws-sdk/util-user-agent-browser@npm:3.523.0":
   version: 3.523.0
   resolution: "@aws-sdk/util-user-agent-browser@npm:3.523.0"
@@ -1214,6 +1224,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@smithy/service-error-classification@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@smithy/service-error-classification@npm:1.1.0"
+  checksum: 10c0/a6cf3dea5f08a5d5ad554bf18c4c9865c318513be149caa998b4b119b7e154c89b9fb93f764d72e48ac3c633010389f056f024099f6919edf6e5d8f61a5028fb
+  languageName: node
+  linkType: hard
+
 "@smithy/service-error-classification@npm:^2.0.4, @smithy/service-error-classification@npm:^2.1.4":
   version: 2.1.4
   resolution: "@smithy/service-error-classification@npm:2.1.4"
@@ -1386,6 +1403,16 @@ __metadata:
     "@smithy/types": "npm:^2.11.0"
     tslib: "npm:^2.5.0"
   checksum: 10c0/8d064fe03653c464dbb31ed6059ae30929317ddb4ae16fdcdec6a58c581d0f054bd8ebf5b61e286a97c9d010e8d182516418f2058fd8560c23dc5c544fd44946
+  languageName: node
+  linkType: hard
+
+"@smithy/util-retry@npm:^1.0.3":
+  version: 1.1.0
+  resolution: "@smithy/util-retry@npm:1.1.0"
+  dependencies:
+    "@smithy/service-error-classification": "npm:^1.1.0"
+    tslib: "npm:^2.5.0"
+  checksum: 10c0/6c52168dbc8708f9388d9c81c55f9edaf1f957ff698d539c766afb5895be3f70f6a384d4569630094fc327fc99ec702305b95b9283b346424e40747f2d5bf7fd
   languageName: node
   linkType: hard
 
@@ -1659,6 +1686,7 @@ __metadata:
     "@aws-sdk/client-s3": "npm:^3.529.1"
     "@aws-sdk/credential-provider-node": "npm:^3.529.1"
     "@aws-sdk/s3-request-presigner": "npm:^3.529.1"
+    "@aws-sdk/util-retry": "npm:^3.374.0"
     "@middy/core": "npm:^5.2.6"
     "@middy/http-header-normalizer": "npm:^5.2.6"
     "@middy/http-json-body-parser": "npm:^5.2.6"

@@ -1,7 +1,9 @@
 import { Construct } from 'constructs';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import * as apigw from 'aws-cdk-lib/aws-apigateway';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import { CfnOutput } from 'aws-cdk-lib';
+import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 
 export interface ApiGatewayProps {
   textSearchLambda: IFunction;
@@ -13,11 +15,21 @@ export class ApiGatewayConstruct extends Construct {
   constructor(scope: Construct, id: string, props: ApiGatewayProps) {
     super(scope, id);
 
+    const logGroup = new logs.LogGroup(this, 'AccessLogs', {
+      retention: 30,
+    });
+    logGroup.grantWrite(new ServicePrincipal('apigateway.amazonaws.com'));
+
     this.productSearchApi = new apigw.RestApi(this, 'productSearchApi', {
       description: 'API for product search',
       restApiName: 'product-search-api',
       defaultCorsPreflightOptions: {
-        allowOrigins: apigw.Cors.ALL_ORIGINS,                
+        allowOrigins: apigw.Cors.ALL_ORIGINS,
+      },
+      cloudWatchRole: true,
+      deployOptions: {
+        accessLogDestination: new apigw.LogGroupLogDestination(logGroup),
+        accessLogFormat: apigw.AccessLogFormat.jsonWithStandardFields(),
       },
     });
 
@@ -38,7 +50,7 @@ export class ApiGatewayConstruct extends Construct {
     });
 
     new CfnOutput(this, 'APIGatewayUrl', {
-      value: this.productSearchApi.url, 
+      value: this.productSearchApi.url,
     });
   }
 }

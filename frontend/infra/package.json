@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "infra",
   "version": "0.1.0",
-  "bin": "bin/backend.js",
+  "bin": "bin/infra.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
@@ -9,18 +9,13 @@
   },
   "devDependencies": {
     "@types/node": "20.11.19",
-    "@types/uuid": "^9",
-    "aws-cdk": "2.131.0",
+    "aws-cdk": "2.132.1",
     "ts-node": "^10.9.2",
     "typescript": "~5.3.3"
   },
   "dependencies": {
-    "@cdklabs/generative-ai-cdk-constructs": "^0.1.83",
-    "aws-cdk-lib": "2.131.0",
+    "aws-cdk-lib": "2.132.1",
     "constructs": "^10.0.0",
-    "uuid": "^9.0.1"
-  },
-  "workspaces": [
-    "lambda"
-  ]
+    "source-map-support": "^0.5.21"
+  }
 }
