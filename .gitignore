@@ -15,3 +15,4 @@ backend/lib/constructs/.DS_Store
 frontend/infra/node_modules
 frontend/build
 
+frontend/infra/.yarn
