@@ -16,3 +16,4 @@ frontend/infra/node_modules
 frontend/build
 
 frontend/infra/.yarn
+.DS_Store
