@@ -8,6 +8,11 @@
 - Install [Nodejs](https://nodejs.org/en/download/) Latest LTS Version. (Project uses Nodejs 20.11.0 and npm 10.2.4)
 - Install [Yarn](https://yarnpkg.com/getting-started/install)
 - Install [cdk](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install)
+- Data setup. Download the [Indo Fashion dataset from Kaggle](https://www.kaggle.com/datasets/validmodel/indo-fashion-dataset) and unzip the data. Here's how the folder structure and the entry in the JSON files look like:
+
+<img src="project_assets/testdata.png" alt="drawing" style="width:400px;"/>
+   
+
 
 ### Backend
 
