@@ -16,7 +16,7 @@
 
 ### Backend
 
-- Clone this repository to your local computer.
+- Clone this repository to your local computer. `git clone https://github.com/aws-samples/amazon-bedrock-titan-multimodal-search.git`
 - In the terminal, from the backend folder execute `yarn install` to install all dependencies.
 - Update the cdk.json - allowedip with the ip-address of your machine, this whitelists the source ip-address to allow traffic into API-Gateway.
 - Run `cdk bootstrap`
