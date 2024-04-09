@@ -62,6 +62,6 @@
     "@aws-cdk/aws-codepipeline-actions:useNewDefaultBranchForCodeCommitSource": true,
     "@aws-cdk/aws-cloudwatch-actions:changeLambdaPermissionLogicalIdForLambdaAction": true,
     "@aws-cdk/aws-codepipeline:crossAccountKeysDefaultValueToFalse": true,
-    "allowedip": ["108.236.149.123/32"]
+    "allowedip": ["71.168.215.31/32"]
   }
 }
