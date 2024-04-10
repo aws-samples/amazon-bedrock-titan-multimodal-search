@@ -9,24 +9,42 @@
 - Install [Yarn](https://yarnpkg.com/getting-started/install)
 - Install [cdk](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install)
 - Data setup. Download the [Indo Fashion dataset from Kaggle](https://www.kaggle.com/datasets/validmodel/indo-fashion-dataset) and unzip the data. Here's how the folder structure and the entry in the JSON files look like:
+- Install docker [docker](https://docs.docker.com/engine/install/)
 
-<img src="project_assets/testdata.png" alt="drawing" style="width:400px;"/>
+<img src="project_assets/testdata.png" alt="testdata" style="width:400px;"/><br/>
+### Bedrock titan multimodal access
+<img src="project_assets/multimodal_access.png" style="width:400px;"/>
    
-
 
 ### Backend
 
-- Clone this repository to your local computer. `git clone https://github.com/aws-samples/amazon-bedrock-titan-multimodal-search.git`
+- Clone this repository to your local computer.
 - In the terminal, from the backend folder execute `yarn install` to install all dependencies.
 - Update the cdk.json - allowedip with the ip-address of your machine, this whitelists the source ip-address to allow traffic into API-Gateway.
+- Ensure that your docker daemon is running
+- Run `docker ps`
+- Make sure you set your aws credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN)
 - Run `cdk bootstrap`
+- Ensure that you get Titan MultiModal access in Bedrock. Attached screenshot in project_asset for reference
 - Run `cdk deploy`
+
+### Data Ingestion
+- Ensure images are uploaded in S3 bucket  /ingest/images…
+- Upload json data files in S3 bucket  /ingest/data
+
 
 ### Frontend
 - From the frontend folder, run `yarn install` to install the frontend dependencies.
 - Run `yarn start` to launch the react application locally from the browser. 
 - Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 - Enter the API endpoint URL created through the backend cdk deployment
+- To deploy frontend browse to infra folder and run following commands
+- Make sure you set your aws credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN)
+- Run `cdk bootstrap`
+- Add S3 bucket name in `cdk.json`
+-`loggingBucketName`: `backendstack-xxxx`
+- Run `cdk deploy`
+- URL will be printed as output in the terminal to access frontend
 
 ## Architecture
 <img src="project_assets/AmazonTitanMultimodal_Arch.png">
