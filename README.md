@@ -9,9 +9,9 @@
 - Install [Yarn](https://yarnpkg.com/getting-started/install)
 - Install [cdk](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install)
 - Data setup. Download the [Indo Fashion dataset from Kaggle](https://www.kaggle.com/datasets/validmodel/indo-fashion-dataset) and unzip the data. Here's how the folder structure and the entry in the JSON files look like:
+<img src="project_assets/testdata.png" alt="testdata" style="width:400px;"/><br/>
 - Install docker [docker](https://docs.docker.com/engine/install/)
 
-<img src="project_assets/testdata.png" alt="testdata" style="width:400px;"/><br/>
 ### Bedrock titan multimodal access
 <img src="project_assets/multimodal_access.png" style="width:400px;"/>
    
@@ -26,11 +26,14 @@
 - Make sure you set your aws credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN)
 - Run `cdk bootstrap`
 - Ensure that you get Titan MultiModal access in Bedrock. Attached screenshot in project_asset for reference
-- Run `cdk deploy`
+- Run `cdk deploy` 
 
 ### Data Ingestion
-- Ensure images are uploaded in S3 bucket  /ingest/images…
+- Ensure images are uploaded in S3 bucket  /ingest/images
+- Browse to the folder where you unzipped data downloaded from Kaggle
+- aws s3 cp --recursive .\images\test\ s3://backendstack-s3constructingestbucket680f5e47-g5jvbbthq3h1/images/ (windows)
 - Upload json data files in S3 bucket  /ingest/data
+- aws s3 cp test_data.json s3://backendstack-s3constructingestbucket680f5e47-g5jvbbthq3h1/data/test_data.json (windows)
 
 
 ### Frontend
