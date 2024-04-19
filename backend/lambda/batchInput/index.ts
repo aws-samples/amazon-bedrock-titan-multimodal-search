@@ -42,8 +42,7 @@ async function createBatches(event: S3Event): Promise<void> {
       return;
     }
 
-    jsonString = JSON.stringify(responseBodyString)
-    inputJsonArray = JSON.parse(jsonString);
+    inputJsonArray = JSON.parse(responseBodyString);
     for (let i = 0; i < inputJsonArray.length; i += batchSize) {
       batches.push(inputJsonArray.slice(i, i + batchSize));
     }

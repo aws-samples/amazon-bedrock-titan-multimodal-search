@@ -34,11 +34,9 @@
 <img src="project_assets/data_ingest.png" style="width:400px;"/>
 - Browse to the folder where you unzipped downloaded data from Kaggle
 - Use following aws cli command to upload images
-- `aws s3 cp --recursive .\images s3://backendstack-s3constructingestbucket680f5e47-g5jvbbthq3h1/images`
+- `aws s3 cp --recursive .\images\test s3://backendstack-s3constructingestbucket680f5e47-g5jvbbthq3h1/images/test`
 - Upload json data files in ingest S3 bucket
 - `aws s3 cp test_data.json s3://backendstack-s3constructingestbucket680f5e47-g5jvbbthq3h1/ingest/`
-- `aws s3 cp train_data.json s3://backendstack-s3constructingestbucket680f5e47-g5jvbbthq3h1/ingest/`
-- `aws s3 cp val_data.json s3://backendstack-s3constructingestbucket680f5e47-g5jvbbthq3h1/ingest/`
 
 
 ### Frontend
