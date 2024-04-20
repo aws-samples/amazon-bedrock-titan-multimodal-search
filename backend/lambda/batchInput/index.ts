@@ -32,7 +32,6 @@ async function createBatches(event: S3Event): Promise<void> {
     const bucketKey = env.BUCKET_KEY;
     const batches: InputJsonType[][] = [];
     const batchSize = Number(env.BATCH_SIZE);
-    let jsonString: string = '';
     let inputJsonArray: InputJsonType[] = [];
 
     const { responseBodyString } = await utils.fetchResponseFromS3(event, s3Client);
