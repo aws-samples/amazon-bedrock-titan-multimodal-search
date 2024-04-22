@@ -8,10 +8,11 @@
 - Install [Nodejs](https://nodejs.org/en/download/) Latest LTS Version. (Project uses Nodejs 20.11.0 and npm 10.2.4)
 - Install [Yarn](https://yarnpkg.com/getting-started/install)
 - Install [cdk](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install)
-- Data setup. Download the [Indo Fashion dataset from Kaggle](https://www.kaggle.com/datasets/validmodel/indo-fashion-dataset) and unzip the data. Here's how the folder structure and the entry in the JSON files look like:
+- Install [aws cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
 - Install docker [docker](https://docs.docker.com/engine/install/)
-
+- Data setup: Download the [Indo Fashion dataset from Kaggle](https://www.kaggle.com/datasets/validmodel/indo-fashion-dataset) and unzip the data. Here's how the folder structure and the entry in the JSON files look like:
 <img src="project_assets/testdata.png" alt="testdata" style="width:400px;"/><br/>
+
 ### Bedrock titan multimodal access
 <img src="project_assets/multimodal_access.png" style="width:400px;"/>
    
@@ -26,11 +27,16 @@
 - Make sure you set your aws credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN)
 - Run `cdk bootstrap`
 - Ensure that you get Titan MultiModal access in Bedrock. Attached screenshot in project_asset for reference
-- Run `cdk deploy`
+- Run `cdk deploy` 
 
 ### Data Ingestion
-- Ensure images are uploaded in S3 bucket  /ingest/images…
-- Upload json data files in S3 bucket  /ingest/data
+- Load images and json files to ingest S3 bucket as shown 
+<img src="project_assets/data_ingest.png" style="width:400px;"/>
+- Browse to the folder where you unzipped downloaded data from Kaggle
+- Use following aws cli command to upload images
+- `aws s3 cp --recursive .\images\test s3://backendstack-s3constructingestbucket680f5e47-g5jvbbthq3h1/images/test`
+- Upload json data files in ingest S3 bucket
+- `aws s3 cp test_data.json s3://backendstack-s3constructingestbucket680f5e47-g5jvbbthq3h1/ingest/`
 
 
 ### Frontend
