@@ -43,7 +43,7 @@ exports.handler = middy()
   async function imageSearch(event: Event & VersionedApiGatewayEvent): Promise<APIGatewayProxyResult> {
     try {
       const error_msg = "Missing query parameter - imageInput";
-      const { imageInput } = event.body as any;
+      const { textInput, imageInput } = event.body as any;
 
       if (!imageInput) {
         logger.error("Error", { message: error_msg });
@@ -51,6 +51,7 @@ exports.handler = middy()
       }
       const input = JSON.stringify({
         inputImage: imageInput,
+        inputText: textInput
       });
 
       const multiModalVector: number[] = await utils.getEmbeddingForProduct(

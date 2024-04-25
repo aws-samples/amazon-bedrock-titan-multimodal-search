@@ -149,7 +149,7 @@ export class LambdaConstruct extends Construct {
       actions: [
         'bedrock:InvokeModel',
       ],
-      resources: ['arn:aws:bedrock:us-east-1::foundation-model/amazon.titan-embed-image-v1'],
+      resources: [`arn:aws:bedrock:${region}::foundation-model/amazon.titan-embed-image-v1`],
     });
 
     this.generateEmbeddingsLambda.addToRolePolicy(policyStatement);
