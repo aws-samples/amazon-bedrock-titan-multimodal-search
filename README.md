@@ -1,7 +1,7 @@
 # Multimodal search using [Amazon Titan Multimodal Embeddings](https://aws.amazon.com/bedrock/titan/)
  Amazon Titan Multimodal Embeddings helps you build more accurate and contextually relevant multimodal search and recommendation experiences for end users. Multimodal refers to a system’s ability to process and generate information using distinct types of data (modalities). With Titan Multimodal Embeddings, you can submit text, image, or a combination of the two as input. The model converts images and short English text up to 128 tokens into embeddings, which capture semantic meaning and relationships between your data. By default, Titan Multimodal Embeddings generates vectors of 1,024 dimensions, which you can use to build search experiences that offer a high degree of accuracy and speed.
 
-##Solution
+## Solution
 The search application shared in this solution will allow an end user to search for products by submitting text and image as input. The search application will use semantica similarity to find closely related products using Amazon Titan Multimodal Embeddings LLM. As shown below, the left side of the user interface allows an end user to pick a reference image and text that describes additional attributes used for searching the product database.
 <img src="project_assets/multimodal-search.png" alt="drawing" style="width:300px;"/>
 
