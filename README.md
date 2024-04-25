@@ -33,7 +33,7 @@ The search application shared in this solution will allow an end user to search 
 
 ### Data Ingestion
 - Load images and json files to ingest S3 bucket as shown 
-<img src="project_assets/data_ingest.png" style="width:400px;"/>
+<img src="project_assets/data_ingest.png""/>
 - Browse to the folder where you unzipped the downloaded data from Kaggle
 - Use following aws cli command to upload images
 - `aws s3 cp --recursive .\images\test s3://backendstack-s3constructingestbucket680f5e47-g5jvbbthq3h1/images/test`
