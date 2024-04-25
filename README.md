@@ -3,7 +3,7 @@
 
 ## Solution
 The search application shared in this solution will allow an end user to search for products by submitting text and image as input. The search application will use semantica similarity to find closely related products using Amazon Titan Multimodal Embeddings LLM. As shown below, the left side of the user interface allows an end user to pick a reference image and text that describes additional attributes used for searching the product database.
-<img src="project_assets/multimodal-search.png" alt="drawing" style="width:300px;"/>
+<img src="project_assets/multimodal-search.png" alt="drawing"/>
 
 ## Deploy the application
 ### Prerequisite
@@ -16,7 +16,7 @@ The search application shared in this solution will allow an end user to search 
 <img src="project_assets/testdata.png" alt="testdata" style="width:400px;"/><br/>
 
 ### Bedrock titan multimodal access
-<img src="project_assets/multimodal_access.png" style="width:400px;"/>
+<img src="project_assets/multimodal_access.png""/>
    
 
 ### Backend
@@ -63,7 +63,7 @@ The search application shared in this solution will allow an end user to search 
 ### Product Image Search
   * Enter the API endpoint URl, click on `Find Similar Products` to view results based on image search. Alternatively you could upload new image by clicking `Change Product` option and performing a search.
 
-    <img src="project_assets/multimodal-search.png" alt="drawing" style="width:300px;"/>
+    <img src="project_assets/multimodal-search.png" alt="drawing"/>
 
 
 ## Cleanup
