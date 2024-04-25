@@ -16,7 +16,7 @@ The search application shared in this solution will allow an end user to search 
 <img src="project_assets/testdata.png" alt="testdata" style="width:400px;"/><br/>
 
 ### Bedrock titan multimodal access
-<img src="project_assets/multimodal_access.png""/>
+<img src="project_assets/multimodal_access.png"/>
    
 
 ### Backend
@@ -32,16 +32,16 @@ The search application shared in this solution will allow an end user to search 
 - Run `cdk deploy` 
 
 ### Data Ingestion
-- Load images and json files to ingest S3 bucket as shown 
-<img src="project_assets/data_ingest.png""/>
 - Browse to the folder where you unzipped the downloaded data from Kaggle
 - Use following aws cli command to upload images
-- `aws s3 cp --recursive .\images\test s3://backendstack-s3constructingestbucket680f5e47-g5jvbbthq3h1/images/test`
+`aws s3 cp --recursive .\images\test s3://backendstack-s3constructingestbucket680f5e47-g5jvbbthq3h1/images/test`
 - The data inside the data file called `test_data.json` is stored in [JSON Lines text file format](https://jsonlines.org/)
 - Use a JSONL to JSON conversion tool to convert the data file to JSON format. You can use [JSONL Converter](https://marketplace.visualstudio.com/items?itemName=F-loat.jsonl-converter) Visual Studio Code extension to perform this conversion.
 - Upload the converted JSON data file to the ingest S3 bucket
-- `aws s3 cp test_data.json s3://backendstack-s3constructingestbucket680f5e47-g5jvbbthq3h1/ingest/`
+`aws s3 cp test_data.json s3://backendstack-s3constructingestbucket680f5e47-g5jvbbthq3h1/ingest/`
 
+The ingestion bucket will look like the following image after a successful upload process 
+<img src="project_assets/data_ingest.png"/>
 
 ### Frontend
 - From the frontend folder, run `yarn install` to install the frontend dependencies.
