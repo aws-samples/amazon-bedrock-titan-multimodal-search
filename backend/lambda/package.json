@@ -20,6 +20,7 @@
     "@middy/core": "^5.2.6",
     "@middy/http-header-normalizer": "^5.2.6",
     "@middy/http-json-body-parser": "^5.2.6",
+    "@middy/util": "^5.2.6",
     "@opensearch-project/opensearch": "^2.6.0",
     "node-fetch": "^3.3.2"
   }

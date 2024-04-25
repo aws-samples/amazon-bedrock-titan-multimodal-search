@@ -15,7 +15,6 @@ export class S3Construct extends Construct {
       autoDeleteObjects: true,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       serverAccessLogsPrefix: 'logs/',
-      versioned: true,
       enforceSSL: true
     })
     

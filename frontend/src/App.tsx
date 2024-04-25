@@ -2,8 +2,7 @@ import './App.css';
 import Container from 'react-bootstrap/Container';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import ImageToImageShowcase from './components/image-to-image';
-import TextToImageShowcase from './components/text-to-image';
+import ImagePlusTextToImageShowcase from './components/img-plus-text-to-image';
 import { useState } from "react";
 
 function App() {
@@ -22,14 +21,7 @@ function App() {
             }}
         />
       </Container>
-      <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3">
-        <Tab eventKey="img-to-img" title="Image Search">
-          <ImageToImageShowcase baseURL={baseUrl}/>
-        </Tab>
-        <Tab eventKey="txt-to-img" title="Text Search">
-          <TextToImageShowcase baseURL={baseUrl}/>
-        </Tab>
-      </Tabs>
+      <ImagePlusTextToImageShowcase baseURL={baseUrl}/>
     </Container>    
   );
 }
