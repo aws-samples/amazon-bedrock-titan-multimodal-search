@@ -67,4 +67,4 @@ The ingestion bucket will look like the following image after a successful uploa
 
 
 ## Cleanup
-- In the terminal, from the backend folder, run the `cdk destroy` command to remove the aws resources.
+- In the terminal, from the frontend/infra folder, run the `cdk destroy` command to remove frontend aws resources. Browse back to backend folder, run the `cdk destroy` to remove backend resources.
