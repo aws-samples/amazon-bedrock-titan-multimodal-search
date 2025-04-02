@@ -45,16 +45,23 @@ The ingestion bucket will look like the following image after a successful uploa
 
 ### Frontend
 - From the frontend folder, run `yarn install` to install the frontend dependencies.
-- Run `yarn start` to launch the react application locally from the browser. 
-- Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-- Enter the API endpoint URL created through the backend cdk deployment
+- Run `npm run build` to build the frontend assets
 - To deploy frontend browse to infra folder and run following commands
 - Make sure you set your aws credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN)
 - Run `cdk bootstrap`
 - Add S3 bucket name in `cdk.json`
 -`loggingBucketName`: `backendstack-xxxx`
 - Run `cdk deploy`
-- URL will be printed as output in the terminal to access frontend
+- Navigate to the URL printed as output in the terminal to access frontend
+- Enter the API endpoint URL created through the backend cdk deployment
+- Upload a picture in the search panel to find semantically similar images 
+   
+### Local Development
+- From the frontend folder, run `yarn install` to install the frontend dependencies.
+- Run `npm run build` to build the frontend assets
+- Run `yarn start` to launch the react application locally from the browser. 
+- Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Enter the API endpoint URL created through the backend cdk deployment
 
 ## Architecture
 <img src="project_assets/AmazonTitanMultimodal_Arch.png">
