@@ -48,8 +48,7 @@ The ingestion bucket will look like the following image after a successful uploa
 - Run `npm run build` to build the frontend assets
 - To deploy frontend browse to infra folder `cd infra` and run following commands
 - Make sure you set your aws credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN)
-- Add S3 log bucket name in `cdk.json`
--`loggingBucketName`: `backendstack-xxxx`
+- Update the S3 log bucket name in `cdk.json` for `loggingBucketName` property - you can resuse the newly created log bucket here
 - Run `cdk deploy`
 - Navigate to the URL printed as output in the terminal to access frontend
 - Enter the API endpoint URL created through the backend cdk deployment
