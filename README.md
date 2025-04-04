@@ -27,7 +27,7 @@ The search application shared in this solution will allow an end user to search 
 - Ensure that your docker daemon is running
 - Run `docker ps`
 - Make sure you set your aws credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN)
-- Run `cdk bootstrap`
+- Optionally, run `cdk bootstrap` 
 - Ensure that you get Titan MultiModal access in Bedrock. Attached screenshot in project_asset for reference
 - Run `cdk deploy` 
 
@@ -46,10 +46,9 @@ The ingestion bucket will look like the following image after a successful uploa
 ### Frontend
 - From the frontend folder, run `yarn install` to install the frontend dependencies.
 - Run `npm run build` to build the frontend assets
-- To deploy frontend browse to infra folder and run following commands
+- To deploy frontend browse to infra folder `cd infra` and run following commands
 - Make sure you set your aws credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN)
-- Run `cdk bootstrap`
-- Add S3 bucket name in `cdk.json`
+- Add S3 log bucket name in `cdk.json`
 -`loggingBucketName`: `backendstack-xxxx`
 - Run `cdk deploy`
 - Navigate to the URL printed as output in the terminal to access frontend
